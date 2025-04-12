@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emission Reports</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0fff4;
+    }
+
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background-color: #2f855a;
+      color: white;
+      padding: 1rem;
+      box-sizing: border-box;
+      float: left;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-weight: bold;
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #2f855a;
+    }
+
+    h2 {
+      color: #38a169;
+    }
+
+    #reportChart {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>🌿 CarbonCalc+</h2>
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="members.html">👨‍👩‍👧‍👦 Members</a>
+    <a href="leaderboard.html">🏆 Leaderboard</a>
+    <a href="offset.html">🌳 Offset</a>
+  </nav>
+
+  <div class="main">
+    <h1>📊 Emission Report</h1>
+    <canvas id="reportChart" width="600" height="300"></canvas>
+
+    <div style="margin-top: 2rem;">
+      <h2>📈 Trends & Comparisons</h2>
+      <p>Track your family's emission history and improvements over time.</p>
+      <ul>
+        <li>🎯 Highest Score This Month: <span id="highScore">-</span></li>
+        <li>📉 Lowest Emission Entry: <span id="lowEmission">-</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reportChart = document.getElementById("reportChart");
+      const history = JSON.parse(localStorage.getItem("emissions")) || [];
+
+      if (history.length === 0) {
+        reportChart.outerHTML = "<p>No emission data found. Please submit from Dashboard first.</p>";
+        return;
+      }
+
+      const labels = history.map((e, i) => `Entry ${i + 1}`);
+      const data = history.map(e => e.total);
+
+      // Populate high/low stats
+      const scores = data;
+      document.getElementById("highScore").textContent = `${Math.max(...scores).toFixed(2)} kg`;
+      document.getElementById("lowEmission").textContent = `${Math.min(...scores).toFixed(2)} kg`;
+
+      new Chart(reportChart, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'CO₂ Emissions (kg)',
+            data,
+            borderColor: '#2f855a',
+            backgroundColor: 'rgba(47, 133, 90, 0.1)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#2f855a',
+                font: {
+                  size: 14
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#4a5568' }
+            },
+            y: {
+              ticks: { color: '#4a5568' }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

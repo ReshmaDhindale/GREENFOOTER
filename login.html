@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - GREENFOOTER</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .login-box h2 {
+      margin-bottom: 1.5rem;
+      color: #2f855a;
+      font-size: 1.6rem;
+    }
+
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      margin-right: 0.5rem;
+      transform: scale(1.1);
+    }
+
+    .checkbox-row label {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #276749;
+    }
+
+    .login-box a {
+      display: block;
+      margin-top: 1rem;
+      color: #2f855a;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+
+    .login-box a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      color: #e53e3e;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>🌱 GREEN FOOTER Login</h2>
+    <input type="text" id="loginUser" placeholder="Username or Email" required>
+    <input type="password" id="loginPass" placeholder="Password" required>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Remember Me</label>
+    </div>
+    
+    <div id="errorMessage" class="error-message"></div>
+
+    <button onclick="doLogin()">Login</button>
+    <a href="register.html">Create an account</a>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const token = localStorage.getItem("userToken");
+      if (token) {
+        window.location.href = "index.html";
+      }
+    };
+
+    async function doLogin() {
+      const username = document.getElementById("loginUser").value.trim();
+      const password = document.getElementById("loginPass").value;
+      const errorDiv = document.getElementById("errorMessage");
+      
+      errorDiv.textContent = "";
+
+      if (!username || !password) {
+        errorDiv.textContent = "Please enter both username and password.";
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorDiv.textContent = data.message || "Login failed. Please try again.";
+          return;
+        }
+        
+        // Login successful
+        if (document.getElementById("rememberMe").checked) {
+          localStorage.setItem("userToken", data.token);
+          localStorage.setItem("userData", JSON.stringify(data.user));
+        } else {
+          sessionStorage.setItem("userToken", data.token);
+          sessionStorage.setItem("userData", JSON.stringify(data.user));
+        }
+        
+        window.location.href = "index.html";
+      } catch (error) {
+        errorDiv.textContent = "Network error. Please try again later.";
+        console.error("Login error:", error);
+      }
+    }
+  </script>
+
+</body>
+</html>

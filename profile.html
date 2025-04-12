@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌿 Family Profile | CarbonCalc+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #edf2f7;
+      color: #2d3748;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+
+    .profile-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    label {
+      font-weight: 500;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #2f855a;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #276749;
+    }
+
+    .stat {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #4a5568;
+    }
+
+    nav {
+      background: #2f855a;
+      padding: 1rem;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="members.html">👨‍👩‍👧 Members</a>
+  <a href="leaderboard.html">🏆 Leaderboard</a>
+  <a href="report.html">📊 Reports</a>
+  <a href="offset.html">🌳 Offset</a>
+</nav>
+
+<div class="container">
+  <h1>👤 Family Profile</h1>
+
+  <div class="profile-box">
+    <label for="familyName">Family Name:</label>
+    <input type="text" id="familyName" placeholder="Enter your family name" />
+
+    <button onclick="saveProfile()">💾 Save Profile</button>
+
+    <div class="stat" id="memberCount">👨‍👩‍👧‍👦 Total Members: 0</div>
+    <div class="stat" id="lastEmission">🌍 Last Recorded Emission: -</div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const nameField = document.getElementById("familyName");
+    const memberCount = document.getElementById("memberCount");
+    const lastEmission = document.getElementById("lastEmission");
+
+    // Load saved family name
+    nameField.value = localStorage.getItem("familyName") || "";
+
+    // Load member count
+    const members = JSON.parse(localStorage.getItem("members")) || [];
+    memberCount.textContent = `👨‍👩‍👧‍👦 Total Members: ${members.length}`;
+
+    // Load last emission record
+    const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
+    if (emissions.length > 0) {
+      const last = emissions[emissions.length - 1];
+      lastEmission.textContent = `🌍 Last Recorded Emission: ${last.total.toFixed(2)} kg on ${new Date(last.date).toLocaleDateString()}`;
+    }
+  });
+
+  function saveProfile() {
+    const name = document.getElementById("familyName").value.trim();
+    if (name) {
+      localStorage.setItem("familyName", name);
+      alert("✅ Family profile updated!");
+    }
+  }
+</script>
+
+</body>
+</html>

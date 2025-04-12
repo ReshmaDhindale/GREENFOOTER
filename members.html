@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Members</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .main {
+      padding: 2rem;
+    }
+
+    form {
+      background: #f0fff4;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+    }
+
+    input, button {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    button {
+      background-color: #38a169;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2f855a;
+    }
+
+    ul#memberList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul#memberList li {
+      background: #e6fffa;
+      padding: 0.75rem;
+      border: 1px solid #b2f5ea;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background: #c53030;
+    }
+
+    #clearMembersBtn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #clearMembersBtn:hover {
+      background: #c53030;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="leaderboard.html">🏆 Leaderboard</a>
+  </nav>
+
+  <div class="main">
+    <h1>👨‍👩‍👧‍👦 Family Member Management</h1>
+
+    <form id="memberForm">
+      <input type="text" placeholder="Name" id="memberName" required />
+      <input type="number" placeholder="Age" id="memberAge" required />
+      <button type="submit">Add Member</button>
+    </form>
+
+    <h2>📋 Current Members</h2>
+    <ul id="memberList"></ul>
+    <p id="memberCount" style="margin-top: 1rem; font-weight: bold;">Total Members: 0</p>
+
+    <!-- ✅ Clear All Button -->
+    <button id="clearMembersBtn">🗑️ Clear All Members</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById("memberForm");
+      const nameInput = document.getElementById("memberName");
+      const ageInput = document.getElementById("memberAge");
+      const list = document.getElementById("memberList");
+      const clearBtn = document.getElementById("clearMembersBtn");
+
+      const loadMembers = () => {
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        list.innerHTML = '';
+        members.forEach((m, index) => {
+          const li = document.createElement("li");
+          li.innerHTML = `${m.name} (Age ${m.age}) <button class="remove-btn" data-index="${index}">Remove</button>`;
+          list.appendChild(li);
+        });
+
+        // ✅ Update total member count
+        const count = document.getElementById("memberCount");
+        if (count) {
+          count.textContent = `Total Members: ${members.length}`;
+        }
+      };
+
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const age = parseInt(ageInput.value);
+        if (!name || !age) return;
+
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        members.push({ name, age });
+        localStorage.setItem("members", JSON.stringify(members));
+        form.reset();
+        loadMembers();
+      });
+
+      list.addEventListener("click", e => {
+        if (e.target.classList.contains("remove-btn")) {
+          const index = e.target.getAttribute("data-index");
+          const members = JSON.parse(localStorage.getItem("members")) || [];
+          members.splice(index, 1);
+          localStorage.setItem("members", JSON.stringify(members));
+          loadMembers();
+        }
+      });
+
+      // ✅ Clear All Members
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          if (confirm("Are you sure you want to remove all members?")) {
+            localStorage.removeItem("members");
+            loadMembers();
+          }
+        });
+      }
+
+      loadMembers();
+    });
+  </script>
+</body>
+</html>

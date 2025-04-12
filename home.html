@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GREEN FOOTER - Carbon Footprint Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #2d3748;
+      background-color: #f7fafc;
+      overflow-x: hidden;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2f855a;
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: #2f855a;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .auth-buttons button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .login-btn {
+      background: transparent;
+      border: 2px solid #2f855a;
+      color: #2f855a;
+    }
+    
+    .signup-btn {
+      background: #2f855a;
+      border: 2px solid #2f855a;
+      color: white;
+    }
+    
+    .login-btn:hover {
+      background: rgba(47, 133, 90, 0.1);
+    }
+    
+    .signup-btn:hover {
+      background: #276749;
+    }
+    
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1470&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 0 5%;
+      color: white;
+    }
+    
+    .hero-content {
+      max-width: 650px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .hero-buttons button {
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .primary-btn {
+      background: #68d391;
+      border: none;
+      color: #1a202c;
+    }
+    
+    .secondary-btn {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+    
+    .primary-btn:hover {
+      background: #48bb78;
+    }
+    
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    section {
+      padding: 5rem 10%;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .features {
+      background-color: #f0fff4;
+    }
+    
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .how-it-works {
+      background-color: white;
+    }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .step-number {
+      background: #68d391;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    .step h3 {
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    
+    .testimonials {
+      background-color: #1a202c;
+      color: white;
+    }
+    
+    .testimonials .section-title h2 {
+      color: #68d391;
+    }
+    
+    .testimonials .section-title p {
+      color: #e2e8f0;
+    }
+    
+    .testimonial-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .testimonial-card {
+      background: #2d3748;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+    }
+    
+    .testimonial-author img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+    
+    footer {
+      background: #2f855a;
+      color: white;
+      padding: 3rem 10%;
+      text-align: center;
+    }
+    
+    footer p {
+      margin-top: 1.5rem;
+    }
+    
+    /* Login Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      animation: fadeIn 0.3s;
+    }
+    
+    .modal-content {
+      background: white;
+      margin: 5% auto;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      animation: slideUp 0.5s;
+      padding: 2rem;
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .close:hover {
+      color: #2f855a;
+    }
+    
+    .modal h2 {
+      color: #2f855a;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .modal button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    
+    .modal button:hover {
+      background: #276749;
+    }
+    
+    .modal-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .modal-footer a {
+      color: #2f855a;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .modal-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+    
+    .checkbox-row input {
+      width: auto;
+      margin-right: 0.5rem;
+    }
+    
+    .error-message {
+      color: #e53e3e;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="#" class="logo">🌱 GREEN FOOTER</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#testimonials">Testimonials</a>
+    </div>
+    <div class="auth-buttons">
+      <button class="login-btn" onclick="openLoginModal()">Login</button>
+      <button class="signup-btn" onclick="openRegisterModal()">Sign Up</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Track & Reduce Your Carbon Footprint</h1>
+      <p>Join thousands of families making a positive impact on the environment with our easy-to-use carbon calculator.</p>
+      <div class="hero-buttons">
+        <button class="primary-btn" onclick="openRegisterModal()">Get Started</button>
+        <button class="secondary-btn" onclick="scrollToFeatures()">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-title">
+      <h2>Features</h2>
+      <p>Everything you need to understand and reduce your environmental impact</p>
+    </div>
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="feature-icon">🏠</div>
+        <h3>Home Energy Tracking</h3>
+        <p>Monitor your household energy consumption and get personalized tips to reduce waste and save money.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Detailed Reports</h3>
+        <p>View comprehensive analytics of your carbon footprint across different categories with easy-to-understand visualizations.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👨‍👩‍👧‍👦</div>
+        <h3>Family Dashboard</h3>
+        <p>Include every family member in your sustainability journey with individual profiles and challenges.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how">
+    <div class="section-title">
+      <h2>How It Works</h2>
+      <p>Start reducing your carbon footprint in three simple steps</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Create Your Account</h3>
+        <p>Sign up for free and set up your household profile in just a few minutes.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Track Your Usage</h3>
+        <p>Enter your daily activities across different categories like energy, transportation, and waste.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Get Recommendations</h3>
+        <p>Receive personalized suggestions to reduce your carbon footprint and track your progress over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-title">
+      <h2>Success Stories</h2>
+      <p>Join thousands of families already making a difference</p>
+    </div>
+    <div class="testimonial-cards">
+      <div class="testimonial-card">
+        <div class="testimonial-text">
+          "We reduced our energy bills by 30% in just 3 months by following the recommendations. Our kids love competing to see who can save the most!"
+        </div>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah Johnson">
+          <div>
+            <h4>Sarah Johnson</h4>
+            <p>Family of 4</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">
+          "I had no idea how much my daily commute was contributing to my carbon footprint. Switched to public transport twice a week and it's made a huge difference."
+        </div>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+          <div>
+            <h4>Michael Chen</h4>
+            <p>Urban Professional</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">
+          "As a teacher, I wanted to show my students how to live more sustainably. Now my whole class uses the app with their families!"
+        </div>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Rodriguez">
+          <div>
+            <h4>Emma Rodriguez</h4>
+            <p>Elementary Teacher</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <h3>🌱 GREEN FOOTER</h3>
+    <p>© 2023 GREEN FOOTER. All rights reserved.</p>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>🌱 Login to GREEN FOOTER</h2>
+      <input type="text" id="loginUser" placeholder="Username" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <div class="checkbox-row">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Remember Me</label>
+      </div>
+      <div id="loginError" class="error-message"></div>
+      <button onclick="doLogin()">Login</button>
+      <div class="modal-footer">
+        <p>Don't have an account? <a onclick="switchToRegister()">Create one</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegisterModal()">&times;</span>
+      <h2>🌿 Create Your Account</h2>
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="date" id="birthDate" placeholder="Birth Date" required>
+      <input type="text" id="newUser" placeholder="Username" required>
+      <input type="password" id="newPass" placeholder="Password" required>
+      <input type="text" id="familyName" placeholder="Family Name" required>
+      <input type="number" id="householdSize" placeholder="Household Size" min="1" value="1" required>
+      <input type="number" id="homeSize" placeholder="Home Size (sq ft)" min="100" value="1000" required>
+      <div id="registerError" class="error-message"></div>
+      <button onclick="registerUser()">Register</button>
+      <div class="modal-footer">
+        <p>Already have an account? <a onclick="switchToLogin()">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functions
+    function openLoginModal() {
+      document.getElementById("loginModal").style.display = "block";
+    }
+    
+    function closeLoginModal() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+    
+    function openRegisterModal() {
+      document.getElementById("registerModal").style.display = "block";
+    }
+    
+    function closeRegisterModal() {
+      document.getElementById("registerModal").style.display = "none";
+    }
+    
+    function switchToRegister() {
+      closeLoginModal();
+      openRegisterModal();
+    }
+    
+    function switchToLogin() {
+      closeRegisterModal();
+      openLoginModal();
+    }
+    
+    function scrollToFeatures() {
+      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Login function - updated to use backend API
+    async function doLogin() {
+      const username = document.getElementById("loginUser").value.trim();
+      const password = document.getElementById("loginPass").value;
+      const errorElement = document.getElementById("loginError");
+      
+      // Clear previous error messages
+      errorElement.textContent = "";
+
+      if (!username || !password) {
+        errorElement.textContent = "Please enter both username and password.";
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Login failed. Please try again.";
+          return;
+        }
+
+        // Store token in localStorage or sessionStorage
+        if (document.getElementById("rememberMe").checked) {
+          localStorage.setItem("userToken", data.token);
+          localStorage.setItem("userData", JSON.stringify(data.user));
+        } else {
+          sessionStorage.setItem("userToken", data.token);
+          sessionStorage.setItem("userData", JSON.stringify(data.user));
+        }
+        
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Login error:", error);
+        errorElement.textContent = "Connection error. Please try again later.";
+      }
+    }
+
+    // Register function - updated to use backend API
+    async function registerUser() {
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const birthDate = document.getElementById("birthDate").value;
+      const username = document.getElementById("newUser").value.trim();
+      const password = document.getElementById("newPass").value;
+      const familyName = document.getElementById("familyName").value.trim();
+      const householdSize = parseInt(document.getElementById("householdSize").value);
+      const homeSize = parseInt(document.getElementById("homeSize").value);
+      const errorElement = document.getElementById("registerError");
+      
+      // Clear previous error messages
+      errorElement.textContent = "";
+
+      if (!fullName || !email || !birthDate || !username || !password || !familyName || !householdSize || !homeSize) {
+        errorElement.textContent = "Please fill in all required fields.";
+        return;
+      }
+       
+      console.log
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+            fullName,
+            birthDate,
+            familyName,
+            householdSize,
+            homeSize,
+            appliances: ['Refrigerator', 'Washing Machine', 'Television']
+          })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Registration failed. Please try again.";
+          return;
+        }
+
+        // Store the token
+        localStorage.setItem("userToken", data.token);
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Registration error:", error);
+        errorElement.textContent = "Connection error. Please try again later.";
+      }
+    }
+
+    // Check if user is already logged in
+    window.onload = () => {
+      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      if (token) {
+        // Verify token validity with backend
+        fetch('http://localhost:5000/api/auth/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = "index.html";
+          } else {
+            // Token invalid or expired, clear storage
+            localStorage.removeItem("userToken");
+            localStorage.removeItem("userData");
+            sessionStorage.removeItem("userToken");
+            sessionStorage.removeItem("userData");
+          }
+        })
+        .catch(err => {
+          console.error("Token verification error:", err);
+        });
+      }
+    };
+  </script>
+</body>
+</html> 

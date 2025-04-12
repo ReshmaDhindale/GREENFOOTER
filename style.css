@@ -1,0 +1,84 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0fdf4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 230px;
+    height: 100vh;
+    background-color: #2f855a;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .sidebar h2 {
+    margin-top: 0;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 0;
+  }
+  
+  .sidebar a:hover {
+    background: #276749;
+  }
+  
+  .main {
+    margin-left: 240px;
+    padding: 2rem;
+  }
+  
+  form input {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #38a169;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+
+html {
+  scroll-behavior: smooth;
+}
+
+.ticker {
+  background: #222;
+  color: #fff;
+  padding: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.ticker__text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 15s linear infinite;
+}
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animated-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animated-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

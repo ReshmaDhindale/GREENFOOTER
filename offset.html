@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Offset Carbon</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0fff4;
+    }
+
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background-color: #2f855a;
+      color: white;
+      padding: 1rem;
+      box-sizing: border-box;
+      float: left;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-weight: bold;
+      <a href="#" onclick="logoutUser()">🚪 Logout</a>
+
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #2f855a;
+    }
+
+    a {
+      color: #2f855a;
+      font-weight: bold;
+    }
+
+    .offset-summary {
+      margin-top: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .offset-summary p {
+      font-size: 1.1rem;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #38a169;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>🌿 CarbonCalc+</h2>
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="members.html">👨‍👩‍👧‍👦 Members</a>
+    <a href="leaderboard.html">🏆 Leaderboard</a>
+    <a href="report.html">📊 Report</a>
+  </nav>
+
+  <div class="main">
+    <h1>🌳 Offset Your Carbon Emissions</h1>
+    <p>Support these initiatives to balance your footprint:</p>
+    <ul>
+      <li>🌱 <a href="https://onetreeplanted.org/" target="_blank">Plant trees with OneTreePlanted</a></li>
+      <li>🌎 <a href="https://www.goldstandard.org/" target="_blank">Join verified carbon credit projects</a></li>
+    </ul>
+
+    <div class="offset-summary">
+      <h2>📦 Your Emissions Summary</h2>
+      <p>Total emissions so far: <span class="highlight" id="totalEmitted">-</span> kg</p>
+      <p>To offset this, you should plant approximately <span class="highlight" id="treesNeeded">-</span> trees 🌳</p>
+      <p>1 tree offsets about <strong>21 kg CO₂</strong> over its lifetime.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
+      const totalCO2 = emissions.reduce((sum, e) => sum + e.total, 0);
+      const trees = Math.ceil(totalCO2 / 21);
+
+      document.getElementById("totalEmitted").textContent = totalCO2.toFixed(2);
+      document.getElementById("treesNeeded").textContent = trees;
+    });
+  </script>
+  <script>
+    function logoutUser() {
+      localStorage.removeItem("rememberedUser");
+      alert("Logged out successfully!");
+      window.location.href = "login.html";
+    }
+  </script>
+  
+</body>
+</html>

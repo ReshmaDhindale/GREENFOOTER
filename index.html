@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GREEN FOOTER - Carbon Footprint Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #2d3748;
+      background-color: #f7fafc;
+      overflow-x: hidden;
+    }
+    
+    /* Home page styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2f855a;
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: #2f855a;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .auth-buttons button, .auth-buttons a {
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .login-btn {
+      background: transparent;
+      border: 2px solid #2f855a;
+      color: #2f855a;
+    }
+    
+    .signup-btn {
+      background: #2f855a;
+      border: 2px solid #2f855a;
+      color: white;
+    }
+    
+    .dashboard-btn {
+      background: #68d391;
+      border: 2px solid #68d391;
+      color: #1a202c;
+    }
+    
+    .login-btn:hover {
+      background: rgba(47, 133, 90, 0.1);
+    }
+    
+    .signup-btn:hover {
+      background: #276749;
+    }
+    
+    .dashboard-btn:hover {
+      background: #48bb78;
+    }
+    
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1470&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 0 5%;
+      color: white;
+    }
+    
+    .hero-content {
+      max-width: 650px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .hero-buttons button, .hero-buttons a {
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .primary-btn {
+      background: #68d391;
+      border: none;
+      color: #1a202c;
+    }
+    
+    .secondary-btn {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+    
+    .primary-btn:hover {
+      background: #48bb78;
+    }
+    
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    section {
+      padding: 5rem 10%;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .features {
+      background-color: #f0fff4;
+    }
+    
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .how-it-works {
+      background-color: white;
+    }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .step-number {
+      background: #68d391;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    .step h3 {
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    
+    .testimonials {
+      background-color: #1a202c;
+      color: white;
+    }
+    
+    .testimonials .section-title h2 {
+      color: #68d391;
+    }
+    
+    .testimonials .section-title p {
+      color: #e2e8f0;
+    }
+    
+    .testimonial-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .testimonial-card {
+      background: #2d3748;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+    }
+    
+    .testimonial-author img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+    
+    .home-footer {
+      background: #2f855a;
+      color: white;
+      padding: 3rem 10%;
+      text-align: center;
+    }
+    
+    .home-footer p {
+      margin-top: 1.5rem;
+    }
+    
+    /* Login Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      animation: fadeIn 0.3s;
+    }
+    
+    .modal-content {
+      background: white;
+      margin: 5% auto;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      animation: slideUp 0.5s;
+      padding: 2rem;
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .close:hover {
+      color: #2f855a;
+    }
+    
+    .modal h2 {
+      color: #2f855a;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .modal button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    
+    .modal button:hover {
+      background: #276749;
+    }
+    
+    .modal-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .modal-footer a {
+      color: #2f855a;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .modal-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+    
+    .checkbox-row input {
+      width: auto;
+      margin-right: 0.5rem;
+    }
+    
+    /* Dashboard styles */
+    .dashboard {
+      display: none;
+    }
+    
+    .dashboard body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #1a202c;
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .dashboard h1, .dashboard h2, .dashboard legend {
+      color: #68d391;
+    }
+    
+    .dashboard .form-card {
+      background: #2d3748;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      padding: 1.5rem;
+      margin-top: 2rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .dashboard .form-card fieldset {
+      border: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+    
+    .dashboard label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+    
+    .dashboard input, .dashboard select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background-color: #4a5568;
+      color: white;
+    }
+    
+    .dashboard input:focus, .dashboard select:focus {
+      outline: none;
+      background-color: #2c7a7b;
+    }
+    
+    .dashboard button {
+      padding: 0.75rem 1.5rem;
+      background-color: #68d391;
+      color: #1a202c;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 1rem 0.5rem 0 0;
+      transition: all 0.3s ease;
+    }
+    
+    .dashboard button:hover {
+      background-color: #48bb78;
+    }
+    
+    .sidebar {
+      width: 220px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background: #2f855a;
+      color: white;
+      padding: 1.5rem 1rem;
+      z-index: 1000;
+    }
+    
+    .sidebar h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .sidebar a {
+      display: block;
+      padding: 0.6rem 0;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .sidebar a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
+    
+    .main {
+      margin-left: 240px;
+      padding: 2rem;
+    }
+    
+    .calculator-step {
+      display: none;
+    }
+    
+    .calculator-step.active {
+      display: block;
+    }
+    
+    #output {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #f6e05e;
+    }
+    
+    .section-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .section-tabs button {
+      background-color: #4a5568;
+      color: #f7fafc;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    
+    .section-tabs button.active {
+      background-color: #68d391;
+      color: #1a202c;
+    }
+    
+    .error-message {
+      color: #e53e3e;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Home Content -->
+  <div id="home-content">
+    <!-- Navigation -->
+    <nav class="navbar">
+      <a href="#" class="logo">🌱 GREEN FOOTER</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#testimonials">Testimonials</a>
+      </div>
+      <div class="auth-buttons">
+        <button class="login-btn" onclick="openLoginModal()">Login</button>
+        <button class="signup-btn" onclick="openRegisterModal()">Sign Up</button>
+        <!-- <a href="#" class="dashboard-btn" onclick="showDashboard()">Dashboard</a> -->
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Track & Reduce Your Carbon Footprint</h1>
+        <p>Join thousands of families making a positive impact on the environment with our easy-to-use carbon calculator.</p>
+        <div class="hero-buttons">
+          <button class="primary-btn" onclick="openRegisterModal()">Get Started</button>
+          <a href="#" class="primary-btn" onclick="showDashboard()">Go to Dashboard</a>
+          <button class="secondary-btn" onclick="scrollToFeatures()">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="section-title">
+        <h2>Features</h2>
+        <p>Everything you need to understand and reduce your environmental impact</p>
+      </div>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-icon">🏠</div>
+          <h3>Home Energy Tracking</h3>
+          <p>Monitor your household energy consumption and get personalized tips to reduce waste and save money.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Detailed Reports</h3>
+          <p>View comprehensive analytics of your carbon footprint across different categories with easy-to-understand visualizations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👨‍👩‍👧‍👦</div>
+          <h3>Family Dashboard</h3>
+          <p>Include every family member in your sustainability journey with individual profiles and challenges.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how">
+      <div class="section-title">
+        <h2>How It Works</h2>
+        <p>Start reducing your carbon footprint in three simple steps</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Create Your Account</h3>
+          <p>Sign up for free and set up your household profile in just a few minutes.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Track Your Usage</h3>
+          <p>Enter your daily activities across different categories like energy, transportation, and waste.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Recommendations</h3>
+          <p>Receive personalized suggestions to reduce your carbon footprint and track your progress over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+      <div class="section-title">
+        <h2>Success Stories</h2>
+        <p>Join thousands of families already making a difference</p>
+      </div>
+      <div class="testimonial-cards">
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "We reduced our energy bills by 30% in just 3 months by following the recommendations. Our kids love competing to see who can save the most!"
+          </div>
+          <div class="testimonial-author">
+            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah Johnson">
+            <div>
+              <h4>Sarah Johnson</h4>
+              <p>Family of 4</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "I had no idea how much my daily commute was contributing to my carbon footprint. Switched to public transport twice a week and it's made a huge difference."
+          </div>
+          <div class="testimonial-author">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+            <div>
+              <h4>Michael Chen</h4>
+              <p>Urban Professional</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "As a teacher, I wanted to show my students how to live more sustainably. Now my whole class uses the app with their families!"
+          </div>
+          <div class="testimonial-author">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Rodriguez">
+            <div>
+              <h4>Emma Rodriguez</h4>
+              <p>Elementary Teacher</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="home-footer">
+      <h3>🌱 GREEN FOOTER</h3>
+      <p>© 2023 GREEN FOOTER. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div id="dashboard-content" class="dashboard">
+    <nav class="sidebar">
+      <h2>🌱 CarbonCalc+</h2>
+      <a href="#" onclick="showHomeFromDashboard()">🏠 Home</a>
+      <a href="members.html">👨‍👩‍👧‍👦 Family Members</a>
+      <a href="report.html">📊 Reports</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="offset.html">🌳 Offset</a>
+      <a href="#" onclick="logoutUser()">🚪 Logout</a>
+    </nav>
+
+    <div class="main fade-in">
+      <h1>🌿 Welcome to Your Family Carbon Dashboard</h1>
+      <p>Track and reduce your household carbon emissions. Let's begin!</p>
+
+      <div id="alertBox" style="display:none; background:#fed7d7; color:#742a2a; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+        ⚠️ High carbon footprint detected! Please review the tips below to improve.
+      </div>
+      
+      <div class="form-card">
+        <div class="section-tabs">
+          <button onclick="goToStep(0)" id="tab0">🏠 Home Energy</button>
+          <button onclick="goToStep(1)" id="tab1">🚗 Transportation</button>
+          <button onclick="goToStep(2)" id="tab2">💧 Water Usage</button>
+          <button onclick="goToStep(3)" id="tab3">🗑️ Waste & Recycling</button>
+          <button onclick="goToStep(4)" id="tab4">🍽️ Diet</button>
+          <button onclick="goToStep(5)" id="tab5">🛍️ Shopping Habits</button>
+        </div>
+
+        <form id="carbonForm">
+          <div class="calculator-step active">
+            <fieldset>
+              <legend>🏠 Home Energy: Light Bulbs</legend>
+              <label>Number of Bulbs: <input type="number" id="bulbCount" required></label>
+              <label>Wattage per Bulb: <input type="number" id="bulbWattage" required></label>
+              <label>Hours Used per Day: <input type="number" id="bulbHours" required></label>
+            </fieldset>
+          </div>
+
+          <div class="calculator-step">
+            <fieldset>
+              <legend>🚗 Transportation</legend>
+              <label>Vehicle Type:
+                <select id="vehicleType">
+                  <option value="car">Car</option>
+                  <option value="motorbike">Motorbike</option>
+                  <option value="public">Public Transport</option>
+                  <option value="ev">Electric Vehicle</option>
+                </select>
+              </label>
+              <label>Distance Traveled per Day (km): <input type="number" id="distance"></label>
+            </fieldset>
+          </div>
+
+          <div class="calculator-step">
+            <fieldset>
+              <legend>💧 Water Usage</legend>
+              <label>Shower Minutes per Day: <input type="number" id="showerMinutes"></label>
+              <label>Laundry Loads per Week: <input type="number" id="laundryLoads"></label>
+            </fieldset>
+          </div>
+
+          <div class="calculator-step">
+            <fieldset>
+              <legend>🗑️ Waste & Recycling</legend>
+              <label>Trash Bags per Week: <input type="number" id="trashBags"></label>
+            </fieldset>
+          </div>
+
+          <div class="calculator-step">
+            <fieldset>
+              <legend>🍽️ Diet (Coming Soon)</legend>
+              <label>Diet Type:
+                <select id="dietType">
+                  <option value="omnivore">Omnivore</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                </select>
+              </label>
+            </fieldset>
+          </div>
+
+          <div class="calculator-step">
+            <fieldset>
+              <legend>🛍️ Shopping Habits (Coming Soon)</legend>
+              <label>Shopping:
+              <label>Clothing Purchased per Month: <input type="number" id="clothingPurchases"></label>
+              <label>Electronics Purchased per Year: <input type="number" id="electronicsPurchases"></label>
+              </label>
+            </fieldset>
+          </div>
+
+          <div class="form-navigation">
+            <button type="button" id="prevBtn">⬅️ Previous</button>
+            <button type="button" id="nextBtn">➡️ Next</button>
+            <button type="submit" id="submitBtn" style="display:none;">Submit</button>
+          </div>
+
+          <p id="output">Live CO₂ Estimate: <span id="liveCO2">0</span> kg/day</p>
+        </form>
+      </div>
+      
+      <div class="form-card" style="margin-top: 2rem;">
+        <h2>💡 Optimization & Tips</h2>
+        <ul id="recommendationsList">
+          <li>✅ Based on your usage, we'll recommend ways to save energy, reduce emissions, and cut costs!</li>
+        </ul>
+      </div>
+      
+      <!-- Submission Summary Panel -->
+      <div id="submissionSection" style="display: none; text-align: center; margin-top: 2rem;">
+        <h2>✅ Submission Successful!</h2>
+        <p style="font-size: 1.2rem;">🎉 Your total estimated daily carbon footprint is:</p>
+        <h1 style="font-size: 2.5rem; color: #f6e05e;" id="finalCO2"></h1>
+        <button onclick="window.location.href='report.html'" style="background-color:#f6ad55; color:#1a202c; font-size: 1.1rem; padding: 0.75rem 2rem; border-radius: 8px; margin-top: 1rem; font-weight: bold;">📊 View Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>🌱 Login to GREEN FOOTER</h2>
+      <input type="text" id="loginUser" placeholder="Username" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <div class="checkbox-row">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Remember Me</label>
+      </div>
+      <div id="loginError" class="error-message"></div>
+      <button onclick="doLogin()">Login</button>
+      <div class="modal-footer">
+        <p>Don't have an account? <a onclick="switchToRegister()">Create one</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegisterModal()">&times;</span>
+      <h2>🌿 Create Your Account</h2>
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="date" id="birthDate" placeholder="Birth Date" required>
+      <input type="text" id="newUser" placeholder="Username" required>
+      <input type="password" id="newPass" placeholder="Password" required>
+      <input type="text" id="familyName" placeholder="Family Name" required>
+      <input type="number" id="householdSize" placeholder="Household Size" min="1" value="1" required>
+      <input type="number" id="homeSize" placeholder="Home Size (sq ft)" min="100" value="1000" required>
+      <div id="registerError" class="error-message"></div>
+      <button onclick="registerUser()">Register</button>
+      <div class="modal-footer">
+        <p>Already have an account? <a onclick="switchToLogin()">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Display logic
+    function showDashboard() {
+      document.getElementById("home-content").style.display = "none";
+      document.getElementById("dashboard-content").style.display = "block";
+      document.body.style.background = "#1a202c";
+      document.body.style.color = "#e2e8f0";
+    }
+    
+    function showHomeFromDashboard() {
+      document.getElementById("dashboard-content").style.display = "none";
+      document.getElementById("home-content").style.display = "block";
+      document.body.style.background = "#f7fafc";
+      document.body.style.color = "#2d3748";
+    }
+    
+    // Modal functions
+    function openLoginModal() {
+      document.getElementById("loginModal").style.display = "block";
+    }
+    
+    function closeLoginModal() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+    
+    function openRegisterModal() {
+      document.getElementById("registerModal").style.display = "block";
+    }
+    
+    function closeRegisterModal() {
+      document.getElementById("registerModal").style.display = "none";
+    }
+    
+    function switchToRegister() {
+      closeLoginModal();
+      openRegisterModal();
+    }
+    
+    function switchToLogin() {
+      closeRegisterModal();
+      openLoginModal();
+    }
+    
+    function scrollToFeatures() {
+      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Dashboard calculator functions
+    let currentStep = 0;
+    const steps = document.querySelectorAll(".calculator-step");
+    const tabs = document.querySelectorAll(".section-tabs button");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const liveCO2 = document.getElementById("liveCO2");
+
+    function showStep(step) {
+      steps.forEach((s, i) => s.classList.toggle("active", i === step));
+      tabs.forEach((t, i) => t.classList.toggle("active", i === step));
+      prevBtn.style.display = step > 0 ? "inline-block" : "none";
+      nextBtn.style.display = step < steps.length - 1 ? "inline-block" : "none";
+      submitBtn.style.display = step === steps.length - 1 ? "inline-block" : "none";
+    }
+
+    function goToStep(step) {
+      currentStep = step;
+      showStep(step);
+      estimateCarbon();
+    }
+
+    function estimateCarbon() {
+      const bulbs = +document.getElementById("bulbCount").value || 0;
+      const wattage = +document.getElementById("bulbWattage").value || 0;
+      const hours = +document.getElementById("bulbHours").value || 0;
+      const distance = +document.getElementById("distance").value || 0;
+      const shower = +document.getElementById("showerMinutes").value || 0;
+      const trash = +document.getElementById("trashBags").value || 0;
+
+      let co2 = (bulbs * wattage * hours * 0.001) + (distance * 0.21) + (shower * 0.05) + (trash * 0.3);
+      liveCO2.textContent = co2.toFixed(2);
+    }
+
+    nextBtn.onclick = () => {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+        estimateCarbon();
+      }
+    };
+
+    prevBtn.onclick = () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+        estimateCarbon();
+      }
+    };
+    
+    // Login function from login.html
+    async function doLogin() {
+      const username = document.getElementById("loginUser").value.trim();
+      const password = document.getElementById("loginPass").value;
+      const errorElement = document.getElementById("loginError");
+      
+      // Clear previous error messages
+      errorElement.textContent = "";
+
+      if (!username || !password) {
+        errorElement.textContent = "Please enter both username and password.";
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Login failed. Please try again.";
+          return;
+        }
+
+        // Check if we received a token in the response
+        if (!data.token) {
+          errorElement.textContent = "Invalid response from server. Missing token.";
+          console.error("Login response missing token:", data);
+          return;
+        }
+
+        // Store token in localStorage or localStorage
+        if (document.getElementById("rememberMe").checked) {
+          localStorage.setItem("userToken", data.token);
+          localStorage.setItem("userData", JSON.stringify(data.user));
+        } else {
+          localStorage.setItem("userToken", data.token);
+          localStorage.setItem("userData", JSON.stringify(data.user));
+        }
+        
+        showDashboard();
+        closeLoginModal();
+      } catch (error) {
+        console.error("Login error:", error);
+        errorElement.textContent = "Connection error. Please try again later.";
+      }
+    }
+
+    // Register function from register.html
+    async function registerUser() {
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const birthDate = document.getElementById("birthDate").value;
+      const username = document.getElementById("newUser").value.trim();
+      const password = document.getElementById("newPass").value;
+      const familyName = document.getElementById("familyName").value.trim();
+      const householdSize = +document.getElementById("householdSize").value || 1;
+      const homeSize = +document.getElementById("homeSize").value || 1000;
+      const errorElement = document.getElementById("registerError");
+      
+      // Clear previous error messages
+      errorElement.textContent = "";
+
+      if (!fullName || !email || !birthDate || !username || !password || !familyName || !householdSize || !homeSize) {
+        errorElement.textContent = "Please fill in all required fields.";
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+            fullName,
+            birthDate,
+            familyName,
+            householdSize,
+            homeSize,
+            appliances: ['Refrigerator', 'Washing Machine', 'Television']
+          })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Registration failed. Please try again.";
+          return;
+        }
+
+        // Store the token
+        localStorage.setItem("userToken", data.token);
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        
+        showDashboard();
+        closeRegisterModal();
+      } catch (error) {
+        console.error("Registration error:", error);
+        errorElement.textContent = "Connection error. Please try again later.";
+      }
+    }
+    
+    function logoutUser() {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      alert("Logged out successfully!");
+      showHomeFromDashboard();
+    }
+
+    // Auto login check on page load
+    // window.onload = () => {
+    //   const token = localStorage.getItem("userToken") || localStorage.getItem("userToken");
+      
+    //   if (token) {
+    //     // Verify token validity with backend
+    //     fetch('http://localhost:5000/api/auth/me', {
+    //       headers: {
+    //         'Authorization': `Bearer ${token}`
+    //       }
+    //     })
+    //     .then(response => {
+    //       if (response.ok) {
+    //         showDashboard();
+    //       } else {
+    //         // Token invalid or expired, clear storage
+    //         localStorage.removeItem("userToken");
+    //         localStorage.removeItem("userData");
+    //         localStorage.removeItem("userToken");
+    //         localStorage.removeItem("userData");
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.error("Token verification error:", err);
+    //     });
+    //   }
+      
+    //   document.getElementById("carbonForm").addEventListener("input", estimateCarbon);
+    //   document.getElementById("carbonForm").addEventListener("submit", function(e) {
+    //     e.preventDefault();
+    //     document.getElementById("submissionSection").style.display = "block";
+    //     document.getElementById("finalCO2").textContent = liveCO2.textContent + " kg/day";
+    //   });
+      
+    //   showStep(currentStep);
+    // };
+  </script>
+</body>
+</html>

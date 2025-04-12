@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #2f855a;
+      color: white;
+      padding: 1rem;
+      height: 100vh;
+      box-sizing: border-box;
+      <a href="profile.html">👤 Profile</a>
+
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 0;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+      <a href="#" onclick="logoutUser()">🚪 Logout</a>
+
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 2rem;
+      background: #f0fff4;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+
+    ul#leaderboardList {
+      list-style-type: none;
+      padding: 0;
+      
+
+    }
+
+    ul#leaderboardList li {
+      background: white;
+      margin-bottom: 0.8rem;
+      padding: 1rem;
+      border-left: 6px solid #2f855a;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rank {
+      font-weight: bold;
+      color: #2f855a;
+      margin-right: 1rem;
+    }
+
+    .score-bar {
+      flex-grow: 1;
+      height: 10px;
+      background: #e6fffa;
+      margin: 0 1rem;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      background: #2f855a;
+    }
+
+    .timestamp {
+      font-size: 0.9rem;
+      color: #718096;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>🌿 CarbonCalc+</h2>
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="members.html">👨‍👩‍👧‍👦 Family Members</a>
+    <a href="report.html">📊 Reports</a>
+    <a href="leaderboard.html">🏆 Leaderboard</a>
+    <a href="offset.html">🌳 Carbon Offset</a>
+  </nav>
+
+  <div class="main">
+    <h1>🏆 Family Leaderboard</h1>
+
+    <ul id="leaderboardList">
+      <li>Loading leaderboard...</li>
+    </ul>
+
+    <!-- ✅ Badge Legend Section -->
+    <div style="margin-top: 2rem;">
+      <h2>🏅 Rewards & Badges</h2>
+      <p>Families earn points based on reduced emissions. Top scorers receive badges!</p>
+      <ul>
+        <li>🥇 1000+ pts – Eco Champion</li>
+        <li>🥈 700–999 pts – Green Hero</li>
+        <li>🥉 500–699 pts – Sustainability Starter</li>
+      </ul>
+    </div>
+
+    <div class="timestamp" id="lastUpdated"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const leaderboardList = document.getElementById("leaderboardList");
+      const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
+      const rememberedUser = localStorage.getItem("rememberedUser") || "Your Family";
+      
+            // ✅ Badge Logic
+            const getBadge = score => {
+        if (score >= 1000) return "🥇";
+        if (score >= 700) return "🥈";
+        if (score >= 500) return "🥉";
+        return "";
+      };
+
+      const userScores = {};
+
+      emissions.forEach(e => {
+        const user = e.user || rememberedUser;
+        const score = Math.max(0, 1000 - e.total);
+        userScores[user] = (userScores[user] || 0) + score;
+      });
+
+      const leaderboard = Object.entries(userScores)
+        .map(([user, score]) => ({ user, score }))
+        .sort((a, b) => b.score - a.score);
+
+      if (leaderboard.length === 0) {
+        leaderboardList.innerHTML = "<li>No data available yet.</li>";
+        return;
+      }
+
+      const maxScore = leaderboard[0].score;
+
+      leaderboardList.innerHTML = leaderboard.map((entry, i) => `
+        <li>
+          <span class="rank">#${i + 1}</span>
+          <span>${getBadge(entry.score)} ${entry.user}</span>
+          <div class="score-bar">
+            <div class="score-fill" style="width: ${(entry.score / maxScore) * 100}%"></div>
+          </div>
+          <span>${entry.score.toFixed(0)} pts</span>
+        </li>
+      `).join('');
+
+      const timestamp = new Date().toLocaleString();
+      document.getElementById("lastUpdated").textContent = `Last updated: ${timestamp}`;
+    });
+  </script>
+  <script>
+    function logoutUser() {
+      localStorage.removeItem("rememberedUser");
+      alert("Logged out successfully!");
+      window.location.href = "login.html";
+    }
+  </script>
+  
+</body>
+</html>
