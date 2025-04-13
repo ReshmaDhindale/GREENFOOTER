@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Offset Carbon</title>
+  <title>Carbon Offset - GreenFooter</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
@@ -11,100 +11,517 @@
       background-color: #f0fff4;
     }
 
-    .sidebar {
-      width: 220px;
-      height: 100vh;
-      background-color: #2f855a;
-      color: white;
-      padding: 1rem;
-      box-sizing: border-box;
-      float: left;
-    }
-
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 1rem 0;
-      font-weight: bold;
-      <a href="#" onclick="logoutUser()">🚪 Logout</a>
-
-    }
-
-    .main {
-      margin-left: 240px;
+    .main-content {
+      margin-left: 250px;
       padding: 2rem;
     }
 
     h1 {
       color: #2f855a;
+      margin-bottom: 1.5rem;
     }
 
-    a {
-      color: #2f855a;
-      font-weight: bold;
+    .offset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    .offset-summary {
-      margin-top: 2rem;
-      background: white;
-      padding: 1.5rem;
+    .offset-card {
+      background-color: white;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
     }
 
-    .offset-summary p {
-      font-size: 1.1rem;
+    .offset-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
     }
 
-    .highlight {
+    .offset-card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .offset-card-content {
+      padding: 1.5rem;
+    }
+
+    .offset-card-title {
       font-weight: bold;
-      color: #38a169;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #2f855a;
+    }
+
+    .offset-card-description {
+      margin-bottom: 1rem;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+
+    .offset-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      color: #718096;
+      font-size: 0.875rem;
+    }
+
+    .offset-card-impact {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.875rem;
+    }
+
+    .offset-card-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .offset-card-button:hover {
+      background-color: #38a169;
+    }
+
+    .summary-section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .summary-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-stat {
+      text-align: center;
+      background-color: #f0fff4;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .summary-stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2f855a;
+      margin-bottom: 0.25rem;
+    }
+
+    .summary-stat-label {
+      color: #4a5568;
+      font-size: 0.875rem;
+    }
+
+    .progress-container {
+      margin-bottom: 1rem;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #2f855a;
+      border-radius: 4px;
+    }
+
+    .filter-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 1rem;
+    }
+
+    select {
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      background-color: white;
+      min-width: 150px;
+    }
+
+    .search-input {
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      min-width: 250px;
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>🌿 CarbonCalc+</h2>
-    <a href="index.html">🏠 Dashboard</a>
-    <a href="members.html">👨‍👩‍👧‍👦 Members</a>
-    <a href="leaderboard.html">🏆 Leaderboard</a>
-    <a href="report.html">📊 Report</a>
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html"><span>📊 Reports</span></a>
+      <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html" class="active"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
   </nav>
 
-  <div class="main">
-    <h1>🌳 Offset Your Carbon Emissions</h1>
-    <p>Support these initiatives to balance your footprint:</p>
-    <ul>
-      <li>🌱 <a href="https://onetreeplanted.org/" target="_blank">Plant trees with OneTreePlanted</a></li>
-      <li>🌎 <a href="https://www.goldstandard.org/" target="_blank">Join verified carbon credit projects</a></li>
-    </ul>
-
-    <div class="offset-summary">
-      <h2>📦 Your Emissions Summary</h2>
-      <p>Total emissions so far: <span class="highlight" id="totalEmitted">-</span> kg</p>
-      <p>To offset this, you should plant approximately <span class="highlight" id="treesNeeded">-</span> trees 🌳</p>
-      <p>1 tree offsets about <strong>21 kg CO₂</strong> over its lifetime.</p>
+  <div class="main-content">
+    <h1>🌳 Carbon Offset Projects</h1>
+    
+    <div class="summary-section">
+      <div class="summary-title">Your Carbon Offset Summary</div>
+      
+      <div class="summary-stats">
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="totalCarbonValue">0</div>
+          <div class="summary-stat-label">Your Carbon Footprint (kg/day)</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="offsetAmount">0</div>
+          <div class="summary-stat-label">Carbon Offset (kg)</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="offsetPercentage">0%</div>
+          <div class="summary-stat-label">Offset Percentage</div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-label">
+          <span>Progress to Carbon Neutral</span>
+          <span id="progressText">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <p>Support verified carbon offset projects to reduce your environmental impact and help fight climate change.</p>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-group">
+        <select id="projectTypeFilter">
+          <option value="all">All Project Types</option>
+          <option value="reforestation">Reforestation</option>
+          <option value="renewable">Renewable Energy</option>
+          <option value="conservation">Conservation</option>
+          <option value="waste">Waste Management</option>
+        </select>
+        
+        <select id="locationFilter">
+          <option value="all">All Locations</option>
+          <option value="local">Local</option>
+          <option value="international">International</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <input type="text" id="searchProjects" class="search-input" placeholder="Search projects...">
+      </div>
+    </div>
+    
+    <div class="offset-grid" id="offsetProjectsGrid">
+      <!-- Projects will be populated with JavaScript -->
     </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
-      const totalCO2 = emissions.reduce((sum, e) => sum + e.total, 0);
-      const trees = Math.ceil(totalCO2 / 21);
-
-      document.getElementById("totalEmitted").textContent = totalCO2.toFixed(2);
-      document.getElementById("treesNeeded").textContent = trees;
+      const token = localStorage.getItem("userToken");
+      
+      // Redirect if not logged in
+      if (!token) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      // Update sidebar user information
+      function updateSidebarUserInfo() {
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+        const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+        
+        document.getElementById("sidebarUserName").textContent = userData.fullName || "User Name";
+        document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+        document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+        document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+        
+        // Update summary values
+        const dailyCarbon = parseFloat(carbonValue);
+        const yearlyCarbon = dailyCarbon * 365;
+        const offsetCarbon = parseFloat(localStorage.getItem("offsetCarbon") || "0");
+        const offsetPercentage = yearlyCarbon > 0 ? Math.min(100, Math.round((offsetCarbon / yearlyCarbon) * 100)) : 0;
+        
+        document.getElementById("totalCarbonValue").textContent = dailyCarbon.toFixed(1);
+        document.getElementById("offsetAmount").textContent = offsetCarbon.toFixed(0);
+        document.getElementById("offsetPercentage").textContent = `${offsetPercentage}%`;
+        document.getElementById("progressText").textContent = `${offsetPercentage}%`;
+        document.getElementById("progressFill").style.width = `${offsetPercentage}%`;
+      }
+      
+      updateSidebarUserInfo();
+      
+      // Sample carbon offset projects
+      const offsetProjects = [
+        {
+          id: 1,
+          name: "Amazon Rainforest Preservation",
+          image: "https://source.unsplash.com/random/400x200/?rainforest",
+          description: "Support efforts to protect and preserve the Amazon rainforest, one of Earth's most important carbon sinks.",
+          location: "Brazil",
+          type: "conservation",
+          price: 15,
+          impact: 500,
+          rating: 4.9
+        },
+        {
+          id: 2,
+          name: "Local Reforestation Initiative",
+          image: "https://source.unsplash.com/random/400x200/?reforestation",
+          description: "Plant trees in your local community to offset carbon emissions and improve air quality.",
+          location: "United States",
+          type: "reforestation",
+          price: 10,
+          impact: 250,
+          rating: 4.8
+        },
+        {
+          id: 3,
+          name: "Solar Energy Access Project",
+          image: "https://source.unsplash.com/random/400x200/?solar",
+          description: "Bring solar energy to communities currently reliant on fossil fuels for electricity.",
+          location: "India",
+          type: "renewable",
+          price: 20,
+          impact: 750,
+          rating: 4.7
+        },
+        {
+          id: 4,
+          name: "Wind Farm Development",
+          image: "https://source.unsplash.com/random/400x200/?wind,farm",
+          description: "Support the construction of new wind farms to generate clean, renewable energy.",
+          location: "Germany",
+          type: "renewable",
+          price: 25,
+          impact: 1000,
+          rating: 4.6
+        },
+        {
+          id: 5,
+          name: "Ocean Cleanup Initiative",
+          image: "https://source.unsplash.com/random/400x200/?ocean,cleanup",
+          description: "Help remove plastic waste from oceans and protect marine ecosystems.",
+          location: "Indonesia",
+          type: "conservation",
+          price: 12,
+          impact: 300,
+          rating: 4.5
+        },
+        {
+          id: 6,
+          name: "Waste-to-Energy Project",
+          image: "https://source.unsplash.com/random/400x200/?waste,energy",
+          description: "Transform municipal waste into clean energy, reducing methane emissions from landfills.",
+          location: "Sweden",
+          type: "waste",
+          price: 18,
+          impact: 600,
+          rating: 4.4
+        }
+      ];
+      
+      // Render offset projects
+      function renderProjects(projects) {
+        const projectsGrid = document.getElementById("offsetProjectsGrid");
+        projectsGrid.innerHTML = "";
+        
+        if (projects.length === 0) {
+          projectsGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+              <p>No projects match your search criteria. Please try different filters.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        projects.forEach(project => {
+          const projectCard = document.createElement("div");
+          projectCard.className = "offset-card";
+          
+          projectCard.innerHTML = `
+            <img src="${project.image}" alt="${project.name}" class="offset-card-img">
+            <div class="offset-card-content">
+              <div class="offset-card-title">${project.name}</div>
+              <div class="offset-card-description">${project.description}</div>
+              <div class="offset-card-meta">
+                <div>📍 ${project.location}</div>
+                <div>⭐ ${project.rating}/5</div>
+              </div>
+              <div class="offset-card-impact">
+                <div>💰 $${project.price} USD</div>
+                <div>🌱 ${project.impact} kg CO2 offset</div>
+              </div>
+              <a href="#" class="offset-card-button" onclick="supportProject(${project.id})">Support This Project</a>
+            </div>
+          `;
+          
+          projectsGrid.appendChild(projectCard);
+        });
+      }
+      
+      // Initial render
+      renderProjects(offsetProjects);
+      
+      // Filter functionality
+      document.getElementById("projectTypeFilter").addEventListener("change", updateFilters);
+      document.getElementById("locationFilter").addEventListener("change", updateFilters);
+      document.getElementById("searchProjects").addEventListener("input", updateFilters);
+      
+      function updateFilters() {
+        const typeFilter = document.getElementById("projectTypeFilter").value;
+        const locationFilter = document.getElementById("locationFilter").value;
+        const searchQuery = document.getElementById("searchProjects").value.toLowerCase();
+        
+        let filteredProjects = offsetProjects;
+        
+        // Filter by project type
+        if (typeFilter !== "all") {
+          filteredProjects = filteredProjects.filter(project => project.type === typeFilter);
+        }
+        
+        // Filter by location
+        if (locationFilter !== "all") {
+          filteredProjects = filteredProjects.filter(project => {
+            if (locationFilter === "local") {
+              return project.location === "United States";
+            } else {
+              return project.location !== "United States";
+            }
+          });
+        }
+        
+        // Filter by search
+        if (searchQuery) {
+          filteredProjects = filteredProjects.filter(project => 
+            project.name.toLowerCase().includes(searchQuery) ||
+            project.description.toLowerCase().includes(searchQuery) ||
+            project.location.toLowerCase().includes(searchQuery)
+          );
+        }
+        
+        renderProjects(filteredProjects);
+      }
     });
-  </script>
-  <script>
+    
+    // Support project function
+    function supportProject(projectId) {
+      // Get the project details
+      const offsetProjects = [
+        { id: 1, impact: 500, price: 15 },
+        { id: 2, impact: 250, price: 10 },
+        { id: 3, impact: 750, price: 20 },
+        { id: 4, impact: 1000, price: 25 },
+        { id: 5, impact: 300, price: 12 },
+        { id: 6, impact: 600, price: 18 }
+      ];
+      
+      const project = offsetProjects.find(p => p.id === projectId);
+      
+      if (project) {
+        // Ask for confirmation
+        if (confirm(`Support this project for $${project.price} and offset ${project.impact} kg of CO2?`)) {
+          // Update local storage with offset amount
+          const currentOffset = parseFloat(localStorage.getItem("offsetCarbon") || "0");
+          localStorage.setItem("offsetCarbon", (currentOffset + project.impact).toString());
+          
+          // Show success message
+          alert(`Thank you for your support! You've offset ${project.impact} kg of CO2.`);
+          
+          // Update the summary
+          const dailyCarbon = parseFloat(localStorage.getItem("carbonFootprint") || "0");
+          const yearlyCarbon = dailyCarbon * 365;
+          const offsetCarbon = parseFloat(localStorage.getItem("offsetCarbon") || "0");
+          const offsetPercentage = yearlyCarbon > 0 ? Math.min(100, Math.round((offsetCarbon / yearlyCarbon) * 100)) : 0;
+          
+          document.getElementById("offsetAmount").textContent = offsetCarbon.toFixed(0);
+          document.getElementById("offsetPercentage").textContent = `${offsetPercentage}%`;
+          document.getElementById("progressText").textContent = `${offsetPercentage}%`;
+          document.getElementById("progressFill").style.width = `${offsetPercentage}%`;
+        }
+      }
+    }
+    
+    // Logout function
     function logoutUser() {
-      localStorage.removeItem("rememberedUser");
-      alert("Logged out successfully!");
-      window.location.href = "login.html";
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      window.location.href = "index.html";
     }
   </script>
-  
 </body>
 </html>

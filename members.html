@@ -2,168 +2,774 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Family Members</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Management - GreenFooter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    .main {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      color: #2d3748;
+      background-color: #f0fff4;
+    }
+    
+    .main-content {
+      margin-left: 250px;
       padding: 2rem;
     }
 
-    form {
-      background: #f0fff4;
-      padding: 1.5rem;
+    .page-title {
+      color: #2f855a;
+      margin-bottom: 1.5rem;
+    }
+    
+    .intro-text {
+      margin-bottom: 2rem;
+    }
+    
+    .family-card {
+      background-color: white;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      margin-bottom: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
     }
-
-    input, button {
-      margin: 0.5rem 0;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-    }
-
-    button {
-      background-color: #38a169;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2f855a;
-    }
-
-    ul#memberList {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    ul#memberList li {
-      background: #e6fffa;
-      padding: 0.75rem;
-      border: 1px solid #b2f5ea;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
+    
+    .family-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 1rem;
     }
-
-    .remove-btn {
-      background: #e53e3e;
-      color: white;
-      border: none;
-      padding: 0.4rem 0.6rem;
-      border-radius: 5px;
+    
+    .family-name {
+      font-size: 1.5rem;
+      color: #2f855a;
+    }
+    
+    .family-info {
+      margin-bottom: 1rem;
+    }
+    
+    .family-info p {
+      margin-bottom: 0.5rem;
+    }
+    
+    .family-members {
+      margin-top: 1.5rem;
+    }
+    
+    .family-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .family-option {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      display: none;
+    }
+    
+    .option-button {
+      background-color: white;
+      border: 2px solid #2f855a;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      color: #2f855a;
+      font-weight: 500;
       cursor: pointer;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s;
     }
-
-    .remove-btn:hover {
-      background: #c53030;
+    
+    .option-button:hover {
+      background-color: #f0fff4;
     }
-
-    #clearMembersBtn {
-      background: #e53e3e;
+    
+    .option-button.active {
+      background-color: #2f855a;
+      color: white;
+    }
+    
+    .button {
+      background-color: #2f855a;
       color: white;
       border: none;
-      padding: 0.6rem;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .button:hover {
+      background-color: #276749;
+    }
+    
+    .button.secondary {
+      background-color: #e2e8f0;
+      color: #4a5568;
+    }
+    
+    .button.secondary:hover {
+      background-color: #cbd5e0;
+    }
+    
+    .button.danger {
+      background-color: #f56565;
+      color: white;
+    }
+    
+    .button.danger:hover {
+      background-color: #e53e3e;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #4a5568;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      font-size: 1rem;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #2f855a;
+    }
+    
+    .error-message {
+      color: #e53e3e;
+      margin-top: 0.5rem;
+    }
+    
+    .success-message {
+      color: #2f855a;
+      margin-top: 0.5rem;
+    }
+    
+    .member-list {
+      margin-top: 1rem;
+    }
+    
+    .member-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      background-color: #f7fafc;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .member-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #4fd1c5;
+      color: white;
+      border-radius: 50%;
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+    
+    .admin-badge {
+      background-color: #2f855a;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-left: 0.5rem;
+    }
+    
+    .invite-code {
+      background-color: #e6fffa;
+      padding: 1rem;
       border-radius: 6px;
       margin-top: 1rem;
-      cursor: pointer;
+      margin-bottom: 1rem;
+      border: 1px dashed #4fd1c5;
+      text-align: center;
+    }
+    
+    .code-value {
+      font-family: monospace;
+      font-size: 1.2rem;
+      color: #2c7a7b;
+      margin: 0.5rem 0;
       font-weight: bold;
     }
 
-    #clearMembersBtn:hover {
-      background: #c53030;
+    .loading {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e2e8f0;
+      border-radius: 50%;
+      border-top-color: #2f855a;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
-    <a href="index.html">🏠 Dashboard</a>
-    <a href="leaderboard.html">🏆 Leaderboard</a>
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html" class="active"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html"><span>📊 Reports</span></a>
+      <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
   </nav>
 
-  <div class="main">
-    <h1>👨‍👩‍👧‍👦 Family Member Management</h1>
-
-    <form id="memberForm">
-      <input type="text" placeholder="Name" id="memberName" required />
-      <input type="number" placeholder="Age" id="memberAge" required />
-      <button type="submit">Add Member</button>
+  <div class="main-content">
+    <h1 class="page-title">👪 Family Management</h1>
+    <p class="intro-text">Create or join a family to track and reduce your carbon footprint together!</p>
+    
+    <!-- Loading indicator -->
+    <div id="loadingSection" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading your family information...</p>
+    </div>
+    
+    <!-- Family not found section -->
+    <div id="noFamilySection" style="display: none;">
+      <div class="family-card">
+        <h2>You are not part of a family yet</h2>
+        <p>Create your own family or join an existing one to start tracking your family's carbon footprint together.</p>
+        
+        <div class="option-buttons">
+          <button id="createFamilyBtn" class="option-button">Create a Family</button>
+          <button id="joinFamilyBtn" class="option-button">Join a Family</button>
+        </div>
+        
+        <!-- Create Family Form -->
+        <div id="createFamilySection" class="family-option">
+          <h3>Create a New Family</h3>
+          <form id="createFamilyForm">
+            <div class="form-group">
+              <label for="familyName">Family Name</label>
+              <input type="text" id="familyName" placeholder="Enter a name for your family" required>
+            </div>
+            <div id="createFamilyError" class="error-message"></div>
+            <button type="submit" class="button">Create Family</button>
+          </form>
+        </div>
+        
+        <!-- Join Family Form -->
+        <div id="joinFamilySection" class="family-option">
+          <h3>Join an Existing Family</h3>
+          <p>Enter the invite code shared by a family admin:</p>
+          <form id="joinFamilyForm">
+            <div class="form-group">
+              <label for="inviteCode">Invite Code</label>
+              <input type="text" id="inviteCode" placeholder="Enter invite code" required>
+            </div>
+            <div id="joinFamilyError" class="error-message"></div>
+            <button type="submit" class="button">Join Family</button>
     </form>
-
-    <h2>📋 Current Members</h2>
-    <ul id="memberList"></ul>
-    <p id="memberCount" style="margin-top: 1rem; font-weight: bold;">Total Members: 0</p>
-
-    <!-- ✅ Clear All Button -->
-    <button id="clearMembersBtn">🗑️ Clear All Members</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Family found section -->
+    <div id="familyFoundSection" style="display: none;">
+      <div class="family-card">
+        <div class="family-header">
+          <h2 class="family-name" id="familyNameDisplay">Family Name</h2>
+          <div id="adminControls" style="display: none;">
+            <button id="inviteButton" class="button">Invite Members</button>
+          </div>
+        </div>
+        
+        <div class="family-info">
+          <p>Admin: <span id="familyAdmin">Admin Name</span></p>
+          <p>Members: <span id="familyMemberCount">0</span></p>
+          <p>Created: <span id="familyCreated">Date</span></p>
+        </div>
+        
+        <div id="inviteSection" style="display: none;">
+          <h3>Invite Others to Join</h3>
+          <p>Share this code with others to invite them to your family:</p>
+          <div class="invite-code">
+            <p class="code-value" id="familyInviteCode">Loading...</p>
+            <button id="copyInviteCode" class="button secondary">Copy Code</button>
+          </div>
+        </div>
+        
+        <div class="family-members">
+          <h3>Family Members</h3>
+          <div id="membersList" class="member-list">
+            <!-- Member items will be added here dynamically -->
+          </div>
+        </div>
+        
+        <div class="family-actions">
+          <button id="leaveFamily" class="button danger">Leave Family</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById("memberForm");
-      const nameInput = document.getElementById("memberName");
-      const ageInput = document.getElementById("memberAge");
-      const list = document.getElementById("memberList");
-      const clearBtn = document.getElementById("clearMembersBtn");
-
-      const loadMembers = () => {
-        const members = JSON.parse(localStorage.getItem("members")) || [];
-        list.innerHTML = '';
-        members.forEach((m, index) => {
-          const li = document.createElement("li");
-          li.innerHTML = `${m.name} (Age ${m.age}) <button class="remove-btn" data-index="${index}">Remove</button>`;
-          list.appendChild(li);
-        });
-
-        // ✅ Update total member count
-        const count = document.getElementById("memberCount");
-        if (count) {
-          count.textContent = `Total Members: ${members.length}`;
+    // Check if user is logged in
+    window.onload = function() {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        window.location.href = "index.html";
+      } else {
+        // Update sidebar and load family data
+        updateSidebarUserInfo();
+        loadFamilyData();
+      }
+    };
+    
+    // Update sidebar user information
+    function updateSidebarUserInfo() {
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+      
+      document.getElementById("sidebarUserName").textContent = userData.username || userData.fullName || "User";
+      document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+      document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+      
+      // Update carbon footprint value
+      updateTotalCarbonFootprint();
+    }
+    
+    // Calculate and update total carbon footprint
+    function updateTotalCarbonFootprint() {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        // Fallback to most recent submission if user not logged in
+        const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+        document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+        return;
+      }
+      
+      // Fetch from database
+      fetch('http://localhost:5000/api/emissions/carbon-footprint', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
-      };
-
-      form.addEventListener("submit", e => {
-        e.preventDefault();
-        const name = nameInput.value.trim();
-        const age = parseInt(ageInput.value);
-        if (!name || !age) return;
-
-        const members = JSON.parse(localStorage.getItem("members")) || [];
-        members.push({ name, age });
-        localStorage.setItem("members", JSON.stringify(members));
-        form.reset();
-        loadMembers();
-      });
-
-      list.addEventListener("click", e => {
-        if (e.target.classList.contains("remove-btn")) {
-          const index = e.target.getAttribute("data-index");
-          const members = JSON.parse(localStorage.getItem("members")) || [];
-          members.splice(index, 1);
-          localStorage.setItem("members", JSON.stringify(members));
-          loadMembers();
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to fetch carbon footprint data');
         }
+      })
+      .then(data => {
+        // Update sidebar with the total sum from server instead of average
+        document.getElementById("sidebarCarbonValue").textContent = data.total.toFixed(1);
+      })
+      .catch(error => {
+        console.error("Error fetching carbon footprint:", error);
+        
+        // Fallback to local calculation
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const userId = userData.id;
+        
+        // Get user's submissions
+        const allSubmissions = JSON.parse(localStorage.getItem("carbonSubmissions") || "{}");
+        const userSubmissions = allSubmissions[userId] || [];
+        
+        if (userSubmissions.length === 0) {
+          const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+          document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+          return;
+        }
+        
+        // Calculate total of all submissions (not average)
+        const total = userSubmissions.reduce((sum, submission) => sum + submission.value, 0);
+        
+        // Update sidebar with total
+        document.getElementById("sidebarCarbonValue").textContent = total.toFixed(1);
       });
-
-      // ✅ Clear All Members
-      if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
-          if (confirm("Are you sure you want to remove all members?")) {
-            localStorage.removeItem("members");
-            loadMembers();
+    }
+    
+    // Load family data from API
+    async function loadFamilyData() {
+      const loadingSection = document.getElementById("loadingSection");
+      const noFamilySection = document.getElementById("noFamilySection");
+      const familyFoundSection = document.getElementById("familyFoundSection");
+      
+      try {
+        const token = localStorage.getItem("userToken");
+        
+        loadingSection.style.display = "block";
+        noFamilySection.style.display = "none";
+        familyFoundSection.style.display = "none";
+        
+        const response = await fetch('http://localhost:5000/api/family/myfamily', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
+        
+        const data = await response.json();
+        
+        if (response.status === 404) {
+          // User is not part of any family
+          loadingSection.style.display = "none";
+          noFamilySection.style.display = "block";
+          setupFamilyOptions();
+        } else if (response.ok) {
+          // User is part of a family
+          const family = data.family;
+          loadingSection.style.display = "none";
+          familyFoundSection.style.display = "block";
+          
+          // Populate family information
+          document.getElementById("familyNameDisplay").textContent = family.name;
+          
+          // Find admin user from members
+          const adminMember = family.members.find(m => m.role === 'admin');
+          const adminUser = family.membersDetails.find(u => u._id === adminMember.userId);
+          document.getElementById("familyAdmin").textContent = adminUser ? (adminUser.fullName || adminUser.username) : "Unknown";
+          
+          document.getElementById("familyMemberCount").textContent = family.members.length;
+          document.getElementById("familyCreated").textContent = new Date(family.createdAt).toLocaleDateString();
+          
+          // Check if current user is admin
+          const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+          const isAdmin = family.adminId === userData.id;
+          
+          if (isAdmin) {
+            document.getElementById("adminControls").style.display = "block";
+            
+            // Setup invite button
+            document.getElementById("inviteButton").addEventListener("click", function() {
+              const inviteSection = document.getElementById("inviteSection");
+              if (inviteSection.style.display === "none") {
+                inviteSection.style.display = "block";
+                getInviteCode();
+              } else {
+                inviteSection.style.display = "none";
+              }
+            });
+          }
+          
+          // Populate members list
+          const membersList = document.getElementById("membersList");
+          membersList.innerHTML = "";
+          
+          family.members.forEach(member => {
+            const memberUser = family.membersDetails.find(u => u._id === member.userId);
+            if (!memberUser) return;
+            
+            const memberItem = document.createElement("div");
+            memberItem.className = "member-item";
+            
+            const nameInitial = (memberUser.fullName || memberUser.username).charAt(0).toUpperCase();
+            
+            memberItem.innerHTML = `
+              <div class="member-info">
+                <div class="member-avatar">${nameInitial}</div>
+                <div>
+                  <div>${memberUser.fullName || memberUser.username}
+                    ${member.role === 'admin' ? '<span class="admin-badge">Admin</span>' : ''}
+                  </div>
+                  <div style="font-size: 0.8rem; color: #718096;">${memberUser.email}</div>
+                </div>
+              </div>
+            `;
+            
+            membersList.appendChild(memberItem);
+          });
+          
+          // Setup leave family button
+          document.getElementById("leaveFamily").addEventListener("click", leaveFamily);
+        } else {
+          throw new Error('Failed to fetch family data');
+        }
+      } catch (error) {
+        console.error("Error loading family data:", error);
+        loadingSection.style.display = "none";
+        noFamilySection.style.display = "block";
+        setupFamilyOptions();
       }
-
-      loadMembers();
-    });
+    }
+    
+    // Setup family options (create or join)
+    function setupFamilyOptions() {
+      const createFamilyBtn = document.getElementById("createFamilyBtn");
+      const joinFamilyBtn = document.getElementById("joinFamilyBtn");
+      const createFamilySection = document.getElementById("createFamilySection");
+      const joinFamilySection = document.getElementById("joinFamilySection");
+      
+      createFamilyBtn.addEventListener("click", function() {
+        createFamilyBtn.classList.add("active");
+        joinFamilyBtn.classList.remove("active");
+        createFamilySection.style.display = "block";
+        joinFamilySection.style.display = "none";
+      });
+      
+      joinFamilyBtn.addEventListener("click", function() {
+        joinFamilyBtn.classList.add("active");
+        createFamilyBtn.classList.remove("active");
+        joinFamilySection.style.display = "block";
+        createFamilySection.style.display = "none";
+      });
+      
+      // Setup form submissions
+      document.getElementById("createFamilyForm").addEventListener("submit", createFamily);
+      document.getElementById("joinFamilyForm").addEventListener("submit", joinFamily);
+    }
+    
+    // Create a new family
+    async function createFamily(e) {
+      e.preventDefault();
+      
+      const nameInput = document.getElementById("familyName");
+      const errorElement = document.getElementById("createFamilyError");
+      const submitButton = e.target.querySelector("button[type='submit']");
+      
+      const familyName = nameInput.value.trim();
+      
+      if (!familyName) {
+        errorElement.textContent = "Please enter a family name";
+        return;
+      }
+      
+      try {
+        submitButton.disabled = true;
+        submitButton.textContent = "Creating...";
+        errorElement.textContent = "";
+        
+        const token = localStorage.getItem("userToken");
+        
+        const response = await fetch('http://localhost:5000/api/family', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: familyName
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Error creating family";
+          return;
+        }
+        
+        // Success, reload family data
+        loadFamilyData();
+      } catch (error) {
+        console.error("Error creating family:", error);
+        errorElement.textContent = "Connection error. Please try again.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Create Family";
+      }
+    }
+    
+    // Join an existing family
+    async function joinFamily(e) {
+      e.preventDefault();
+      
+      const codeInput = document.getElementById("inviteCode");
+      const errorElement = document.getElementById("joinFamilyError");
+      const submitButton = e.target.querySelector("button[type='submit']");
+      
+      const inviteCode = codeInput.value.trim();
+      
+      if (!inviteCode) {
+        errorElement.textContent = "Please enter an invite code";
+        return;
+      }
+      
+      try {
+        submitButton.disabled = true;
+        submitButton.textContent = "Joining...";
+        errorElement.textContent = "";
+        
+        const token = localStorage.getItem("userToken");
+        
+        const response = await fetch('http://localhost:5000/api/family/join', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            inviteCode
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          errorElement.textContent = data.message || "Error joining family";
+          return;
+        }
+        
+        // Success, reload family data
+        loadFamilyData();
+      } catch (error) {
+        console.error("Error joining family:", error);
+        errorElement.textContent = "Connection error. Please try again.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Join Family";
+      }
+    }
+    
+    // Get invite code for family
+    async function getInviteCode() {
+      const inviteCodeElement = document.getElementById("familyInviteCode");
+      const copyButton = document.getElementById("copyInviteCode");
+      
+      try {
+        inviteCodeElement.textContent = "Loading...";
+        
+        const token = localStorage.getItem("userToken");
+        
+        const response = await fetch('http://localhost:5000/api/family/invite', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          inviteCodeElement.textContent = "Error loading invite code";
+          return;
+        }
+        
+        inviteCodeElement.textContent = data.inviteCode;
+        
+        // Setup copy button
+        copyButton.addEventListener("click", function() {
+          navigator.clipboard.writeText(data.inviteCode)
+            .then(() => {
+              copyButton.textContent = "Copied!";
+              setTimeout(() => {
+                copyButton.textContent = "Copy Code";
+              }, 2000);
+            })
+            .catch(err => {
+              console.error('Failed to copy: ', err);
+            });
+        });
+      } catch (error) {
+        console.error("Error getting invite code:", error);
+        inviteCodeElement.textContent = "Error loading invite code";
+      }
+    }
+    
+    // Leave family
+    async function leaveFamily() {
+      if (!confirm("Are you sure you want to leave this family? This action cannot be undone.")) {
+        return;
+      }
+      
+      try {
+        const token = localStorage.getItem("userToken");
+        
+        const response = await fetch('http://localhost:5000/api/family/leave', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          alert(data.message || "Error leaving family");
+          return;
+        }
+        
+        // Success, reload family data
+        loadFamilyData();
+      } catch (error) {
+        console.error("Error leaving family:", error);
+        alert("Connection error. Please try again.");
+      }
+    }
+    
+    // Logout function
+    function logoutUser() {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>

@@ -1,6 +1,22 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+// Emission schema for carbon footprint records
+const EmissionSchema = new mongoose.Schema({
+  value: {
+    type: Number,
+    required: true
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  details: {
+    type: Object,
+    default: {}
+  }
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -20,8 +36,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   fullName: {
-    type: String,
-    required: true
+    type: String
   },
   birthDate: {
     type: Date
@@ -50,22 +65,11 @@ const UserSchema = new mongoose.Schema({
   lastLogin: {
     type: Date
   },
-  familyName: {
-    type: String,
-    required: true
-  },
-  householdSize: {
+  emissions: [EmissionSchema],
+  averageCarbonFootprint: {
     type: Number,
-    required: true
+    default: 0
   },
-  homeSize: {
-    type: Number,
-    required: true
-  },
-  appliances: [{
-    type: String,
-    required: true
-  }],
   preferences: {
     notifications: {
       type: Boolean,
@@ -98,15 +102,46 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
 
 // Method to get user's carbon footprint
 UserSchema.methods.getCarbonFootprint = async function() {
-  // This will be implemented with actual calculation logic
-  return {
-    total: 0,
-    breakdown: {
-      electricity: 0,
-      transportation: 0,
-      waste: 0,
-      water: 0
+  if (!this.emissions || this.emissions.length === 0) {
+    return {
+      total: 0,
+      average: 0,
+      breakdown: {
+        electricity: 0,
+        transportation: 0,
+        waste: 0,
+        water: 0
+      }
+    };
+  }
+  
+  // Calculate totals from emission records
+  const total = this.emissions.reduce((sum, emission) => sum + emission.value, 0);
+  const average = total / this.emissions.length;
+  
+  // Calculate breakdown if details are available
+  const breakdown = {
+    electricity: 0,
+    transportation: 0,
+    waste: 0,
+    water: 0
+  };
+  
+  // Try to populate breakdown from emission details
+  this.emissions.forEach(emission => {
+    if (emission.details) {
+      Object.keys(breakdown).forEach(key => {
+        if (emission.details[key]) {
+          breakdown[key] += emission.details[key];
+        }
+      });
     }
+  });
+  
+  return {
+    total,
+    average,
+    breakdown
   };
 };
 

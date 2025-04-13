@@ -6,34 +6,146 @@ body {
   }
   
   .sidebar {
+    width: 250px;
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    width: 230px;
-    height: 100vh;
-    background-color: #2f855a;
+    background: linear-gradient(to bottom, #2f855a, #276749);
     color: white;
-    padding: 1rem;
+    padding: 0;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
   }
   
-  .sidebar h2 {
-    margin-top: 0;
+  .sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   
-  .sidebar a {
-    display: block;
+  .sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
     color: white;
     text-decoration: none;
-    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
-  .sidebar a:hover {
-    background: #276749;
+  .sidebar-user {
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   
-  .main {
-    margin-left: 240px;
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #c6f6d5;
+    color: #2f855a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+    border: 2px solid white;
+  }
+  
+  .user-name {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .user-email {
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #9ae6b4;
+  }
+  
+  .sidebar-nav {
+    padding: 1rem 0;
+  }
+  
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .sidebar-nav a.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 600;
+    border-left: 4px solid #9ae6b4;
+  }
+  
+  .sidebar-nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  .sidebar-nav a span {
+    margin-left: 0.8rem;
+  }
+  
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 1rem 1.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .main-content {
+    margin-left: 250px;
     padding: 2rem;
+    min-height: 100vh;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      position: relative;
+      height: auto;
+    }
+    
+    .main-content {
+      margin-left: 0;
+    }
   }
   
   form input {

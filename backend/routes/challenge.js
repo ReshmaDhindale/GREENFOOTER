@@ -82,7 +82,21 @@ router.get('/', verifyToken, async (req, res) => {
 router.get('/active', verifyToken, async (req, res) => {
   try {
     const challenges = await Challenge.getActiveChallenges();
-    res.json(challenges);
+    
+    // Format challenges for the leaderboard UI
+    const formattedChallenges = challenges.map(challenge => ({
+      id: challenge._id,
+      title: challenge.title,
+      description: challenge.description,
+      category: challenge.category,
+      difficulty: challenge.difficulty,
+      participants: challenge.participants?.length || 0,
+      endDate: challenge.duration?.endDate
+    }));
+    
+    res.json({
+      challenges: formattedChallenges
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching active challenges', error: error.message });
   }

@@ -2,190 +2,755 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Leaderboard</title>
+  <title>Leaderboard - GreenFooter</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      display: flex;
+      background-color: #f0fff4;
     }
 
-    .sidebar {
-      width: 220px;
-      background-color: #2f855a;
-      color: white;
-      padding: 1rem;
-      height: 100vh;
-      box-sizing: border-box;
-      <a href="profile.html">👤 Profile</a>
-
-    }
-
-    .sidebar h2 {
-      margin-top: 0;
-    }
-
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      padding: 0.5rem 0;
-      font-weight: bold;
-    }
-
-    .sidebar a:hover {
-      text-decoration: underline;
-      <a href="#" onclick="logoutUser()">🚪 Logout</a>
-
-    }
-
-    .main {
-      flex-grow: 1;
+    .main-content {
+      margin-left: 250px;
       padding: 2rem;
-      background: #f0fff4;
-      min-height: 100vh;
-      box-sizing: border-box;
     }
 
     h1 {
       color: #2f855a;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
-    ul#leaderboardList {
-      list-style-type: none;
-      padding: 0;
-      
-
+    .leaderboard-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    ul#leaderboardList li {
-      background: white;
-      margin-bottom: 0.8rem;
-      padding: 1rem;
-      border-left: 6px solid #2f855a;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      font-size: 1.1rem;
+    .leaderboard-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .tab.active {
+      color: #2f855a;
+      border-bottom: 2px solid #2f855a;
+    }
+
+    .tab:hover:not(.active) {
+      color: #38a169;
+      border-bottom-color: #a0aec0;
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .leaderboard-table th {
+      color: #4a5568;
+      font-weight: bold;
+      background-color: #f7fafc;
+    }
+
+    .leaderboard-table tr:hover {
+      background-color: #f0fff4;
     }
 
     .rank {
       font-weight: bold;
-      color: #2f855a;
-      margin-right: 1rem;
-    }
-
-    .score-bar {
-      flex-grow: 1;
-      height: 10px;
-      background: #e6fffa;
-      margin: 0 1rem;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    .score-fill {
-      height: 100%;
-      background: #2f855a;
-    }
-
-    .timestamp {
-      font-size: 0.9rem;
       color: #718096;
+      width: 50px;
+      text-align: center;
+    }
+
+    .medal {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .user-row {
+      background-color: #ebfff0;
+      font-weight: bold;
+    }
+
+    .carbon-value {
+      font-weight: bold;
+      color: #38a169;
+    }
+
+    .change-value {
+      font-weight: bold;
+    }
+
+    .change-value.positive {
+      color: #38a169;
+    }
+
+    .change-value.negative {
+      color: #e53e3e;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 1rem;
+    }
+
+    select {
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+    .info-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #2f855a;
+      margin-bottom: 1rem;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
       margin-top: 1rem;
+    }
+
+    .badge {
+      background-color: #f7fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .badge:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge-name {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .badge-desc {
+      font-size: 0.85rem;
+      color: #718096;
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>🌿 CarbonCalc+</h2>
-    <a href="index.html">🏠 Dashboard</a>
-    <a href="members.html">👨‍👩‍👧‍👦 Family Members</a>
-    <a href="report.html">📊 Reports</a>
-    <a href="leaderboard.html">🏆 Leaderboard</a>
-    <a href="offset.html">🌳 Carbon Offset</a>
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html"><span>📊 Reports</span></a>
+      <a href="leaderboard.html" class="active"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
   </nav>
 
-  <div class="main">
-    <h1>🏆 Family Leaderboard</h1>
-
-    <ul id="leaderboardList">
-      <li>Loading leaderboard...</li>
-    </ul>
-
-    <!-- ✅ Badge Legend Section -->
-    <div style="margin-top: 2rem;">
-      <h2>🏅 Rewards & Badges</h2>
-      <p>Families earn points based on reduced emissions. Top scorers receive badges!</p>
-      <ul>
-        <li>🥇 1000+ pts – Eco Champion</li>
-        <li>🥈 700–999 pts – Green Hero</li>
-        <li>🥉 500–699 pts – Sustainability Starter</li>
+  <div class="main-content">
+    <h1>🏆 Family Carbon Leaderboard</h1>
+    
+    <div class="leaderboard-container">
+      <div class="leaderboard-tabs">
+        <div class="tab active" onclick="switchTab(this, 'global')">Global Rankings</div>
+        <div class="tab" onclick="switchTab(this, 'friends')">Friends</div>
+        <div class="tab" onclick="switchTab(this, 'local')">Local Area</div>
+      </div>
+      
+      <div class="filters">
+        <div class="filter-group">
+          <select id="timeFilter">
+            <option value="weekly">This Week</option>
+            <option value="monthly" selected>This Month</option>
+            <option value="yearly">This Year</option>
+            <option value="alltime">All Time</option>
+          </select>
+          
+          <select id="categoryFilter">
+            <option value="all" selected>All Categories</option>
+            <option value="transportation">Transportation</option>
+            <option value="energy">Home Energy</option>
+            <option value="food">Food</option>
+            <option value="waste">Waste</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <input type="text" id="searchInput" placeholder="Search families..." style="padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 5px;">
+        </div>
+      </div>
+      
+      <table class="leaderboard-table" id="leaderboardTable">
+        <thead>
+          <tr>
+            <th class="rank">#</th>
+            <th>Family</th>
+            <th>Members</th>
+            <th>Family CO2 (kg/day)</th>
+            <th>Weekly Change</th>
+            <th>Badges</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <!-- Table will be populated with JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="info-card">
+      <div class="card-title">🎖️ Your Achievements</div>
+      <p>Earn badges by reducing your carbon footprint and completing eco-challenges.</p>
+      
+      <div class="badges-grid" id="userBadgesGrid">
+        <!-- Badges will be populated with JavaScript -->
+      </div>
+    </div>
+    
+    <div class="info-card">
+      <div class="card-title">📋 Current Challenges</div>
+      <p>Complete these challenges to earn new badges and improve your ranking!</p>
+      
+      <ul id="challengesList">
+        <!-- Challenges will be populated with JavaScript -->
       </ul>
     </div>
-
-    <div class="timestamp" id="lastUpdated"></div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const leaderboardList = document.getElementById("leaderboardList");
-      const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
-      const rememberedUser = localStorage.getItem("rememberedUser") || "Your Family";
+      const token = localStorage.getItem("userToken");
       
-            // ✅ Badge Logic
-            const getBadge = score => {
-        if (score >= 1000) return "🥇";
-        if (score >= 700) return "🥈";
-        if (score >= 500) return "🥉";
-        return "";
-      };
-
-      const userScores = {};
-
-      emissions.forEach(e => {
-        const user = e.user || rememberedUser;
-        const score = Math.max(0, 1000 - e.total);
-        userScores[user] = (userScores[user] || 0) + score;
-      });
-
-      const leaderboard = Object.entries(userScores)
-        .map(([user, score]) => ({ user, score }))
-        .sort((a, b) => b.score - a.score);
-
-      if (leaderboard.length === 0) {
-        leaderboardList.innerHTML = "<li>No data available yet.</li>";
+      // Redirect if not logged in
+      if (!token) {
+        window.location.href = "index.html";
         return;
       }
+      
+      // Update sidebar user information
+      function updateSidebarUserInfo() {
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+        
+        document.getElementById("sidebarUserName").textContent = userData.fullName || userData.username || "User Name";
+        document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+        document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+        
+        // Update carbon value using database data
+        updateTotalCarbonFootprint();
+      }
+      
+      // Calculate and update total carbon footprint
+      function updateTotalCarbonFootprint() {
+        const token = localStorage.getItem("userToken");
+        if (!token) {
+          // Fallback to most recent submission if user not logged in
+          const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+          document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+          return;
+        }
+        
+        // Fetch from database
+        fetch('http://localhost:5000/api/emissions/carbon-footprint', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch carbon footprint data');
+          }
+        })
+        .then(data => {
+          // Update sidebar with the total sum from server
+          document.getElementById("sidebarCarbonValue").textContent = data.total.toFixed(1);
+        })
+        .catch(error => {
+          console.error("Error fetching carbon footprint:", error);
+          
+          // Fallback to local calculation
+          const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+          const userId = userData.id;
+          
+          // Get user's submissions
+          const allSubmissions = JSON.parse(localStorage.getItem("carbonSubmissions") || "{}");
+          const userSubmissions = allSubmissions[userId] || [];
+          
+          if (userSubmissions.length === 0) {
+            const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+            document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+            return;
+          }
+          
+          // Calculate total of all submissions
+          const total = userSubmissions.reduce((sum, submission) => sum + submission.value, 0);
+          
+          // Update sidebar with total
+          document.getElementById("sidebarCarbonValue").textContent = total.toFixed(1);
+        });
+      }
+      
+      updateSidebarUserInfo();
+      
+      // Function to fetch real family data from the database and build leaderboard
+      async function fetchLeaderboardData() {
+        const tableBody = document.getElementById("leaderboardBody");
+        tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Loading leaderboard data...</td></tr>";
+        
+        try {
+          // Fetch all families
+          const response = await fetch('http://localhost:5000/api/family/all', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch families');
+          }
+          
+          const data = await response.json();
+          const families = data.families || [];
+          
+          // Get current user's family ID
+          const userResponse = await fetch('http://localhost:5000/api/family/myfamily', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          let userFamilyId = null;
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            userFamilyId = userData.family._id;
+          }
 
-      const maxScore = leaderboard[0].score;
+          // Fetch carbon footprint data for each family
+          const familiesWithEmissions = await Promise.all(families.map(async (family) => {
+            try {
+              // Get emissions for all family members
+              const memberEmissions = await Promise.all(family.members.map(async (memberId) => {
+                const emissionResponse = await fetch(`http://localhost:5000/api/emissions/carbon-footprint`, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'User-Id': memberId
+                  }
+                });
+                
+                if (emissionResponse.ok) {
+                  const emissionData = await emissionResponse.json();
+                  return emissionData.total || 0;
+                }
+                return 0;
+              }));
 
-      leaderboardList.innerHTML = leaderboard.map((entry, i) => `
-        <li>
-          <span class="rank">#${i + 1}</span>
-          <span>${getBadge(entry.score)} ${entry.user}</span>
-          <div class="score-bar">
-            <div class="score-fill" style="width: ${(entry.score / maxScore) * 100}%"></div>
-          </div>
-          <span>${entry.score.toFixed(0)} pts</span>
-        </li>
-      `).join('');
-
-      const timestamp = new Date().toLocaleString();
-      document.getElementById("lastUpdated").textContent = `Last updated: ${timestamp}`;
+              // Calculate total family emissions
+              const totalFamilyEmissions = memberEmissions.reduce((sum, emission) => sum + emission, 0);
+              
+              return {
+                ...family,
+                totalEmissions: totalFamilyEmissions
+              };
+            } catch (error) {
+              console.error(`Error fetching emissions for family ${family._id}:`, error);
+              return {
+                ...family,
+                totalEmissions: 0
+              };
+            }
+          }));
+          
+          // Sort families by carbon emissions (lowest first is better)
+          const sortedFamilies = familiesWithEmissions.sort((a, b) => 
+            a.totalEmissions - b.totalEmissions
+          );
+          
+          // Calculate weekly change (mock data for now)
+          const familiesWithChange = sortedFamilies.map(family => {
+            const change = (Math.random() * 6) - 3;
+            const badges = [];
+            
+            if (family.achievements) {
+              family.achievements.forEach(achievement => {
+                if (achievement.type === 'reduction') badges.push('🌱');
+                if (achievement.type === 'streak') badges.push('🔥');
+                if (achievement.type === 'milestone') badges.push('🏆');
+              });
+            }
+            
+            if (badges.length === 0) badges.push('🌱');
+            
+            // Use per-member values for badges
+            const emissionsPerMember = family.totalEmissions / family.members.length;
+            if (emissionsPerMember < 15) badges.push('♻️');
+            if (emissionsPerMember < 10) badges.push('🚲');
+            if (emissionsPerMember < 5) badges.push('🔋');
+            
+            return {
+              id: family._id,
+              name: family.name,
+              members: family.members.length,
+              carbon: family.totalEmissions,
+              change: change,
+              badges: [...new Set(badges)]
+            };
+          });
+          
+          renderLeaderboard(familiesWithChange, userFamilyId);
+        } catch (error) {
+          console.error("Error fetching leaderboard data:", error);
+          tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Failed to load leaderboard data. Please try again later.</td></tr>";
+          
+          // Fallback data remains the same
+          const fallbackData = [
+            { id: 1, name: "The Green Family", members: 4, carbon: 8.2, change: -1.2, badges: ["🌱", "🚲", "♻️"] },
+            { id: 2, name: "Eco Warriors", members: 5, carbon: 9.5, change: -0.8, badges: ["🌱", "🚲"] },
+            { id: 3, name: "Your Family", members: 3, carbon: 10.7, change: -2.1, badges: ["🌱", "♻️", "🔋"] },
+            { id: 4, name: "Smith Family", members: 4, carbon: 11.3, change: 0.5, badges: ["🌱"] },
+            { id: 5, name: "Johnson Household", members: 2, carbon: 12.8, change: -0.3, badges: ["🌱", "🚲"] }
+          ];
+          
+          renderLeaderboard(fallbackData);
+        }
+      }
+      
+      // Populate leaderboard table
+      function renderLeaderboard(data, userFamilyId = null) {
+        const tableBody = document.getElementById("leaderboardBody");
+        tableBody.innerHTML = "";
+        
+        data.forEach((family, index) => {
+          const row = document.createElement("tr");
+          
+          // Add user-row class for the current user's family
+          if (userFamilyId && family.id === userFamilyId) {
+            row.classList.add("user-row");
+          }
+          
+          // Medal for top 3
+          let rankText = `<span class="rank">${index + 1}</span>`;
+          if (index === 0) rankText = `<span class="medal">🥇</span>`;
+          if (index === 1) rankText = `<span class="medal">🥈</span>`;
+          if (index === 2) rankText = `<span class="medal">🥉</span>`;
+          
+          // Change indicator
+          const changeClass = family.change < 0 ? "negative" : "positive";
+          const changeSymbol = family.change < 0 ? "↓" : "↑";
+          const changeText = `<span class="change-value ${changeClass}">${changeSymbol} ${Math.abs(family.change).toFixed(1)}</span>`;
+          
+          row.innerHTML = `
+            <td class="rank">${rankText}</td>
+            <td>${family.name}</td>
+            <td>${family.members}</td>
+            <td><span class="carbon-value">${family.carbon.toFixed(1)}</span></td>
+            <td>${changeText}</td>
+            <td>${family.badges.join(" ")}</td>
+          `;
+          
+          tableBody.appendChild(row);
+        });
+      }
+      
+      // Initial fetch
+      fetchLeaderboardData();
+      
+      // Fetch user badges
+      async function fetchUserBadges() {
+        try {
+          const response = await fetch('http://localhost:5000/api/user/badges', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch user badges');
+          }
+          
+          const data = await response.json();
+          return data.badges || [];
+        } catch (error) {
+          console.error("Error fetching user badges:", error);
+          // Return sample badges as fallback
+          return [
+            { icon: "🌱", name: "Green Beginner", description: "Started your eco-friendly journey" },
+            { icon: "♻️", name: "Recycling Champion", description: "Consistently reduced waste through recycling" },
+            { icon: "🔋", name: "Energy Saver", description: "Reduced energy consumption by 20%" }
+          ];
+        }
+      }
+      
+      // Populate user badges
+      async function renderUserBadges() {
+        const badges = await fetchUserBadges();
+        const badgesGrid = document.getElementById("userBadgesGrid");
+        badgesGrid.innerHTML = "";
+        
+        badges.forEach(badge => {
+          const badgeElement = document.createElement("div");
+          badgeElement.className = "badge";
+          badgeElement.innerHTML = `
+            <div class="badge-icon">${badge.icon}</div>
+            <div class="badge-name">${badge.name}</div>
+            <div class="badge-desc">${badge.description}</div>
+          `;
+          badgesGrid.appendChild(badgeElement);
+        });
+      }
+      
+      renderUserBadges();
+      
+      // Fetch active challenges
+      async function fetchChallenges() {
+        try {
+          const response = await fetch('http://localhost:5000/api/challenges/active', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch challenges');
+          }
+          
+          const data = await response.json();
+          return data.challenges || [];
+        } catch (error) {
+          console.error("Error fetching challenges:", error);
+          // Return sample challenges as fallback
+          return [
+            "Reduce your transportation emissions by 10% this month",
+            "Complete 1 week with zero food waste",
+            "Replace 5 regular light bulbs with LED alternatives",
+            "Use public transportation or bike for 3 days this week"
+          ];
+        }
+      }
+      
+      // Populate challenges
+      async function renderChallenges() {
+        const challenges = await fetchChallenges();
+        const challengesList = document.getElementById("challengesList");
+        challengesList.innerHTML = "";
+        
+        challenges.forEach(challenge => {
+          const li = document.createElement("li");
+          if (typeof challenge === 'string') {
+            li.textContent = challenge;
+          } else {
+            // If it's an object from the API
+            li.textContent = challenge.title || challenge.description;
+          }
+          challengesList.appendChild(li);
+        });
+      }
+      
+      renderChallenges();
+      
+      // Filter functionality
+      document.getElementById("timeFilter").addEventListener("change", applyFilters);
+      document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+      document.getElementById("searchInput").addEventListener("input", applyFilters);
+      
+      async function applyFilters() {
+        const timeFilter = document.getElementById("timeFilter").value;
+        const categoryFilter = document.getElementById("categoryFilter").value;
+        const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        
+        // Show loading state
+        const tableBody = document.getElementById("leaderboardBody");
+        tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Applying filters...</td></tr>";
+        
+        try {
+          // In a real implementation, you would send these filters to the backend
+          // For now, we'll re-fetch all data and filter client-side
+          const response = await fetch('http://localhost:5000/api/family/all', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch families');
+          }
+          
+          const data = await response.json();
+          let families = data.families || [];
+          
+          // Filter by search query
+          if (searchQuery) {
+            families = families.filter(family => 
+              family.name.toLowerCase().includes(searchQuery)
+            );
+          }
+          
+          // Get current user's family ID
+          const userResponse = await fetch('http://localhost:5000/api/family/myfamily', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          let userFamilyId = null;
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            userFamilyId = userData.family._id;
+          }
+          
+          // Sort and format data
+          const sortedFamilies = families.sort((a, b) => a.totalEmissions - b.totalEmissions);
+          
+          const familiesWithChange = sortedFamilies.map(family => {
+            const change = (Math.random() * 6) - 3;
+            const badges = [];
+            
+            if (family.achievements) {
+              family.achievements.forEach(achievement => {
+                if (achievement.type === 'reduction') badges.push('🌱');
+                if (achievement.type === 'streak') badges.push('🔥');
+                if (achievement.type === 'milestone') badges.push('🏆');
+              });
+            }
+            
+            if (badges.length === 0) badges.push('🌱');
+            
+            // Use per-member values for badges
+            const emissionsPerMember = family.totalEmissions / family.members.length;
+            if (emissionsPerMember < 15) badges.push('♻️');
+            if (emissionsPerMember < 10) badges.push('🚲');
+            if (emissionsPerMember < 5) badges.push('🔋');
+            
+            return {
+              id: family._id,
+              name: family.name,
+              members: family.members.length,
+              carbon: family.totalEmissions,
+              change: change,
+              badges: [...new Set(badges)]
+            };
+          });
+          
+          renderLeaderboard(familiesWithChange, userFamilyId);
+        } catch (error) {
+          console.error("Error applying filters:", error);
+          tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Failed to apply filters. Please try again.</td></tr>";
+        }
+      }
     });
-  </script>
-  <script>
+    
+    // Tab switching functionality
+    function switchTab(tab, tabName) {
+      // Remove active class from all tabs
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      
+      // Add active class to clicked tab
+      tab.classList.add('active');
+      
+      // Update filter options based on the tab
+      if (tabName === 'global') {
+        document.getElementById('timeFilter').value = 'monthly';
+        document.getElementById('categoryFilter').value = 'all';
+      } else if (tabName === 'friends') {
+        document.getElementById('timeFilter').value = 'weekly';
+      } else if (tabName === 'local') {
+        document.getElementById('categoryFilter').value = 'all';
+      }
+      
+      // Trigger filters update to refresh the data
+      document.getElementById('timeFilter').dispatchEvent(new Event('change'));
+    }
+    
+    // Logout function
     function logoutUser() {
-      localStorage.removeItem("rememberedUser");
-      alert("Logged out successfully!");
-      window.location.href = "login.html";
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      window.location.href = "index.html";
     }
   </script>
-  
 </body>
 </html>

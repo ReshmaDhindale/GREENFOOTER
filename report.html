@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Emission Reports</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Reports - GreenFooter</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -12,126 +12,752 @@
       background-color: #f0fff4;
     }
 
-    .sidebar {
-      width: 220px;
-      height: 100vh;
-      background-color: #2f855a;
-      color: white;
-      padding: 1rem;
-      box-sizing: border-box;
-      float: left;
-    }
-
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 1rem 0;
-      font-weight: bold;
-    }
-
-    .main {
-      margin-left: 240px;
+    .main-content {
+      margin-left: 250px;
       padding: 2rem;
     }
 
     h1 {
       color: #2f855a;
+      margin-bottom: 1.5rem;
     }
 
-    h2 {
-      color: #38a169;
+    .reports-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
-    #reportChart {
-      background: white;
+    .report-card {
+      background-color: white;
       border-radius: 10px;
-      padding: 1rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
     }
 
-    ul {
-      line-height: 1.8;
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-bottom: 2rem;
+    }
+
+    .report-filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-item label {
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+      color: #4a5568;
+    }
+
+    .filter-item select, .filter-item input {
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+    }
+
+    .report-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .summary-item {
+      background-color: #f0fff4;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2f855a;
+      margin-bottom: 0.25rem;
+    }
+
+    .summary-label {
+      font-size: 0.875rem;
+      color: #4a5568;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .report-header h2 {
+      margin: 0;
+      color: #2f855a;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .report-btn {
+      padding: 0.5rem 1rem;
+      background-color: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .report-btn:hover {
+      background-color: #38a169;
+    }
+
+    .report-btn.secondary {
+      background-color: #e2e8f0;
+      color: #4a5568;
+    }
+
+    .report-btn.secondary:hover {
+      background-color: #cbd5e0;
+    }
+
+    .insights-list {
+      margin-top: 1.5rem;
+    }
+
+    .insight-item {
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: #f0fff4;
+      margin-bottom: 1rem;
+      border-left: 4px solid #38a169;
+    }
+
+    .insight-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #2f855a;
+    }
+
+    .insight-text {
+      color: #4a5568;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f0fff4;
+      color: #2f855a;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #f7fafc;
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>🌿 CarbonCalc+</h2>
-    <a href="index.html">🏠 Dashboard</a>
-    <a href="members.html">👨‍👩‍👧‍👦 Members</a>
-    <a href="leaderboard.html">🏆 Leaderboard</a>
-    <a href="offset.html">🌳 Offset</a>
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html" class="active"><span>📊 Reports</span></a>
+      <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
   </nav>
 
-  <div class="main">
-    <h1>📊 Emission Report</h1>
-    <canvas id="reportChart" width="600" height="300"></canvas>
-
-    <div style="margin-top: 2rem;">
-      <h2>📈 Trends & Comparisons</h2>
-      <p>Track your family's emission history and improvements over time.</p>
-      <ul>
-        <li>🎯 Highest Score This Month: <span id="highScore">-</span></li>
-        <li>📉 Lowest Emission Entry: <span id="lowEmission">-</span></li>
-      </ul>
+  <div class="main-content">
+    <h1>📊 Carbon Footprint Reports</h1>
+    
+    <div class="reports-container">
+      <!-- Time Series Chart -->
+      <div class="report-card">
+        <div class="report-header">
+          <h2>Carbon Footprint Over Time</h2>
+          <div class="report-actions">
+            <button class="report-btn secondary" onclick="exportChart('timeChart')">Export</button>
+            <button class="report-btn" onclick="updateTimeChart()">Refresh</button>
+          </div>
+        </div>
+        
+        <div class="report-filters">
+          <div class="filter-item">
+            <label for="timeRange">Time Range</label>
+            <select id="timeRange" onchange="updateTimeChart()">
+              <option value="7">Last 7 days</option>
+              <option value="30" selected>Last 30 days</option>
+              <option value="90">Last 90 days</option>
+              <option value="365">Last year</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="chartInterval">Interval</label>
+            <select id="chartInterval" onchange="updateTimeChart()">
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <canvas id="timeChart"></canvas>
+        </div>
+        
+        <div class="report-summary">
+          <div class="summary-item">
+            <div class="summary-value" id="avgFootprint">0</div>
+            <div class="summary-label">Avg. kg CO2/day</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="totalFootprint">0</div>
+            <div class="summary-label">Total kg CO2</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="footprintTrend">0%</div>
+            <div class="summary-label">vs. Previous Period</div>
+          </div>
+        </div>
+        
+        <div class="insights-list">
+          <div class="insight-item">
+            <div class="insight-title">Positive Trend 🌱</div>
+            <div class="insight-text">Your carbon footprint has decreased by 15% compared to the previous period. Keep up the good work!</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Category Breakdown -->
+      <div class="report-card">
+        <div class="report-header">
+          <h2>Carbon Footprint by Category</h2>
+          <div class="report-actions">
+            <button class="report-btn secondary" onclick="exportChart('categoryChart')">Export</button>
+            <button class="report-btn" onclick="updateCategoryChart()">Refresh</button>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <canvas id="categoryChart"></canvas>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Carbon (kg CO2)</th>
+                <th>% of Total</th>
+                <th>vs. Average</th>
+              </tr>
+            </thead>
+            <tbody id="categoryTable">
+              <!-- Table rows will be populated with JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Family Comparison -->
+      <div class="report-card">
+        <div class="report-header">
+          <h2>Family Member Comparison</h2>
+          <div class="report-actions">
+            <button class="report-btn secondary" onclick="exportChart('familyChart')">Export</button>
+            <button class="report-btn" onclick="updateFamilyChart()">Refresh</button>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <canvas id="familyChart"></canvas>
+        </div>
+        
+        <div class="report-summary">
+          <div class="summary-item">
+            <div class="summary-value" id="familyTotal">0</div>
+            <div class="summary-label">Total Family CO2 (kg/day)</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="memberCount">0</div>
+            <div class="summary-label">Family Members</div>
+          </div>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Member Name</th>
+                <th>Role</th>
+                <th>CO2 Emissions (kg/day)</th>
+                <th>% of Family Total</th>
+              </tr>
+            </thead>
+            <tbody id="familyEmissionsTable">
+              <!-- Table will be populated with JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="insights-list">
+          <div class="insight-item">
+            <div class="insight-title">Family Insights</div>
+            <div class="insight-text" id="familyInsights">
+              <p>Loading family data...</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const reportChart = document.getElementById("reportChart");
-      const history = JSON.parse(localStorage.getItem("emissions")) || [];
+      const token = localStorage.getItem("userToken");
 
-      if (history.length === 0) {
-        reportChart.outerHTML = "<p>No emission data found. Please submit from Dashboard first.</p>";
+      // Redirect if not logged in
+      if (!token) {
+        window.location.href = "index.html";
         return;
       }
 
-      const labels = history.map((e, i) => `Entry ${i + 1}`);
-      const data = history.map(e => e.total);
-
-      // Populate high/low stats
-      const scores = data;
-      document.getElementById("highScore").textContent = `${Math.max(...scores).toFixed(2)} kg`;
-      document.getElementById("lowEmission").textContent = `${Math.min(...scores).toFixed(2)} kg`;
-
-      new Chart(reportChart, {
+      // Update sidebar user information
+      function updateSidebarUserInfo() {
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+        const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+        
+        document.getElementById("sidebarUserName").textContent = userData.fullName || "User Name";
+        document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+        document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+        document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+      }
+      
+      // Update sidebar on load
+      updateSidebarUserInfo();
+      
+      // Initialize charts
+      initializeCharts();
+      
+      // Populate category table
+      populateCategoryTable();
+      
+      // Load real family data
+      updateFamilyChart();
+    });
+    
+    // Initialize all charts
+    function initializeCharts() {
+      // Time series chart
+      const timeCtx = document.getElementById('timeChart').getContext('2d');
+      window.timeChart = new Chart(timeCtx, {
         type: 'line',
         data: {
-          labels,
+          labels: generateDateLabels(30, 'weekly'),
           datasets: [{
-            label: 'CO₂ Emissions (kg)',
-            data,
-            borderColor: '#2f855a',
+            label: 'Carbon Footprint (kg CO2)',
+            data: generateRandomData(30, 5, 20),
             backgroundColor: 'rgba(47, 133, 90, 0.1)',
-            fill: true,
-            tension: 0.3
+            borderColor: 'rgba(47, 133, 90, 1)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
-              labels: {
-                color: '#2f855a',
-                font: {
-                  size: 14
-                }
-              }
+              position: 'top',
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
             }
           },
           scales: {
-            x: {
-              ticks: { color: '#4a5568' }
-            },
             y: {
-              ticks: { color: '#4a5568' }
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Carbon Footprint (kg CO2)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
             }
           }
         }
       });
-    });
+      
+      // Category breakdown chart
+      const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+      window.categoryChart = new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Transportation', 'Energy', 'Food', 'Shopping', 'Water'],
+          datasets: [{
+            data: [35, 25, 20, 15, 5],
+            backgroundColor: [
+              'rgba(47, 133, 90, 0.7)',
+              'rgba(72, 187, 120, 0.7)',
+              'rgba(104, 211, 145, 0.7)',
+              'rgba(154, 230, 180, 0.7)',
+              'rgba(198, 246, 213, 0.7)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+      
+      // Family comparison chart
+      const familyCtx = document.getElementById('familyChart').getContext('2d');
+      window.familyChart = new Chart(familyCtx, {
+        type: 'bar',
+        data: {
+          labels: getFamilyMemberNames(),
+          datasets: [{
+            label: 'Carbon Footprint (kg CO2/day)',
+            data: getFamilyMemberFootprints(),
+            backgroundColor: 'rgba(47, 133, 90, 0.7)',
+            borderColor: 'rgba(47, 133, 90, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Carbon Footprint (kg CO2/day)'
+              }
+            }
+          }
+        }
+      });
+      
+      // Update summary values
+      updateSummaryValues();
+    }
+    
+    // Generate random data for demo purposes
+    function generateRandomData(count, min, max) {
+      const data = [];
+      for (let i = 0; i < count; i++) {
+        data.push(Math.random() * (max - min) + min);
+      }
+      return data;
+    }
+    
+    // Generate date labels
+    function generateDateLabels(days, interval) {
+      const labels = [];
+      const date = new Date();
+      
+      if (interval === 'monthly') {
+        for (let i = days; i >= 0; i -= 30) {
+          const d = new Date();
+          d.setDate(date.getDate() - i);
+          labels.push(d.toLocaleString('default', { month: 'short', year: '2-digit' }));
+        }
+      } else if (interval === 'weekly') {
+        for (let i = days; i >= 0; i -= 7) {
+          const d = new Date();
+          d.setDate(date.getDate() - i);
+          labels.push(`Week ${Math.ceil((d.getDate()) / 7)}, ${d.toLocaleString('default', { month: 'short' })}`);
+        }
+      } else {
+        for (let i = days; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(date.getDate() - i);
+          labels.push(d.toLocaleDateString('default', { month: 'short', day: 'numeric' }));
+        }
+      }
+      
+      return labels;
+    }
+    
+    // Update time chart based on selected filters
+    function updateTimeChart() {
+      const timeRange = document.getElementById('timeRange').value;
+      const interval = document.getElementById('chartInterval').value;
+      
+      window.timeChart.data.labels = generateDateLabels(parseInt(timeRange), interval);
+      window.timeChart.data.datasets[0].data = generateRandomData(parseInt(timeRange), 5, 20);
+      window.timeChart.update();
+      
+      // Update summary values
+      updateSummaryValues();
+    }
+    
+    // Update category chart
+    function updateCategoryChart() {
+      const newData = [
+        Math.floor(Math.random() * 40) + 10,
+        Math.floor(Math.random() * 30) + 10,
+        Math.floor(Math.random() * 25) + 10,
+        Math.floor(Math.random() * 20) + 5,
+        Math.floor(Math.random() * 10) + 1
+      ];
+      
+      window.categoryChart.data.datasets[0].data = newData;
+      window.categoryChart.update();
+      
+      // Update the table
+      populateCategoryTable();
+    }
+    
+    // Populate category table
+    function populateCategoryTable() {
+      const tableBody = document.getElementById('categoryTable');
+      const categories = ['Transportation', 'Energy', 'Food', 'Shopping', 'Water'];
+      const values = window.categoryChart.data.datasets[0].data;
+      const total = values.reduce((a, b) => a + b, 0);
+      
+      // Clear table
+      tableBody.innerHTML = '';
+      
+      // Add rows
+      categories.forEach((category, index) => {
+        const row = document.createElement('tr');
+        const percentage = ((values[index] / total) * 100).toFixed(1);
+        const comparisonToAvg = Math.random() * 40 - 20; // Random value between -20% and +20%
+        
+        row.innerHTML = `
+          <td>${category}</td>
+          <td>${values[index].toFixed(1)}</td>
+          <td>${percentage}%</td>
+          <td style="color: ${comparisonToAvg >= 0 ? '#e53e3e' : '#2f855a'}">
+            ${comparisonToAvg >= 0 ? '+' : ''}${comparisonToAvg.toFixed(1)}%
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    }
+    
+    // Get family member names from localStorage
+    function getFamilyMemberNames() {
+      const members = JSON.parse(localStorage.getItem('members')) || [];
+      
+      if (members.length === 0) {
+        return ['You', 'User 2', 'User 3', 'User 4']; // Default for demo
+      }
+      
+      return members.map(member => member.name);
+    }
+    
+    // Get family member footprints from localStorage
+    function getFamilyMemberFootprints() {
+      const members = JSON.parse(localStorage.getItem('members')) || [];
+      
+      if (members.length === 0) {
+        return [12, 15, 9, 18]; // Default for demo
+      }
+      
+      return members.map(member => parseFloat(member.footprint) || Math.floor(Math.random() * 15) + 5);
+    }
+    
+    // Update family comparison chart
+    async function updateFamilyChart() {
+      try {
+        const token = localStorage.getItem("userToken");
+        
+        // Show loading state
+        document.getElementById("familyEmissionsTable").innerHTML = "<tr><td colspan='4' style='text-align:center;'>Loading family data...</td></tr>";
+        document.getElementById("familyInsights").innerHTML = "<p>Loading family data...</p>";
+        
+        // Fetch real family emissions data
+        const response = await fetch('http://localhost:5000/api/family/emissions', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch family data');
+        }
+        
+        const data = await response.json();
+        const family = data.family;
+        
+        if (!family || !family.membersWithEmissions || family.membersWithEmissions.length === 0) {
+          document.getElementById("familyEmissionsTable").innerHTML = "<tr><td colspan='4' style='text-align:center;'>No family data available</td></tr>";
+          document.getElementById("familyInsights").innerHTML = "<p>You haven't joined a family yet or your family has no emissions data.</p>";
+          
+          // Fallback to demo data for the chart
+          window.familyChart.data.labels = ['You', 'User 2', 'User 3', 'User 4'];
+          window.familyChart.data.datasets[0].data = [12, 15, 9, 18];
+          window.familyChart.update();
+          return;
+        }
+        
+        // Update chart with real data
+        const members = family.membersWithEmissions;
+        const names = members.map(member => member.name);
+        const emissions = members.map(member => member.totalEmissions);
+        
+        window.familyChart.data.labels = names;
+        window.familyChart.data.datasets[0].data = emissions;
+        window.familyChart.update();
+        
+        // Update summary stats
+        document.getElementById("familyTotal").textContent = family.totalEmissions.toFixed(1);
+        document.getElementById("memberCount").textContent = members.length;
+        
+        // Update table
+        const tableBody = document.getElementById("familyEmissionsTable");
+        tableBody.innerHTML = '';
+        
+        members.forEach(member => {
+          const percentOfTotal = (member.totalEmissions / family.totalEmissions * 100).toFixed(1);
+          const row = document.createElement('tr');
+          
+          row.innerHTML = `
+            <td>${member.name}</td>
+            <td>${member.role === 'admin' ? 'Admin' : 'Member'}</td>
+            <td>${member.totalEmissions.toFixed(1)}</td>
+            <td>${percentOfTotal}%</td>
+          `;
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update insights
+        let insights = '';
+        const lowestEmitter = [...members].sort((a, b) => a.totalEmissions - b.totalEmissions)[0];
+        const highestEmitter = [...members].sort((a, b) => b.totalEmissions - a.totalEmissions)[0];
+        
+        insights += `<p>Your family's total carbon footprint is ${family.totalEmissions.toFixed(1)} kg/day.</p>`;
+        
+        if (members.length > 1) {
+          insights += `<p>${lowestEmitter.name} has the lowest emissions (${lowestEmitter.totalEmissions.toFixed(1)} kg/day).</p>`;
+          
+          if (highestEmitter.totalEmissions > lowestEmitter.totalEmissions * 1.5) {
+            insights += `<p>${highestEmitter.name} could reduce emissions by ${(highestEmitter.totalEmissions - lowestEmitter.totalEmissions).toFixed(1)} kg/day to match ${lowestEmitter.name}.</p>`;
+          }
+        }
+        
+        document.getElementById("familyInsights").innerHTML = insights;
+        
+      } catch (error) {
+        console.error("Error fetching family data:", error);
+        document.getElementById("familyEmissionsTable").innerHTML = "<tr><td colspan='4' style='text-align:center;'>Failed to load family data</td></tr>";
+        document.getElementById("familyInsights").innerHTML = "<p>Error loading family data. Please try again later.</p>";
+        
+        // Fallback to demo data
+        window.familyChart.data.labels = ['You', 'User 2', 'User 3', 'User 4'];
+        window.familyChart.data.datasets[0].data = [12, 15, 9, 18];
+        window.familyChart.update();
+      }
+    }
+    
+    // Update summary values
+    function updateSummaryValues() {
+      const data = window.timeChart.data.datasets[0].data;
+      const avgFootprint = data.reduce((a, b) => a + b, 0) / data.length;
+      const totalFootprint = data.reduce((a, b) => a + b, 0);
+      
+      // Random trend between -30% and +30%
+      const trend = Math.random() * 60 - 30;
+      
+      document.getElementById('avgFootprint').textContent = avgFootprint.toFixed(1);
+      document.getElementById('totalFootprint').textContent = totalFootprint.toFixed(1);
+      document.getElementById('footprintTrend').textContent = `${trend >= 0 ? '+' : ''}${trend.toFixed(1)}%`;
+      document.getElementById('footprintTrend').style.color = trend >= 0 ? '#e53e3e' : '#2f855a';
+    }
+    
+    // Export chart as image
+    function exportChart(chartId) {
+      const chart = window[chartId];
+      const link = document.createElement('a');
+      link.href = chart.toBase64Image();
+      link.download = `greenfooter-${chartId}-${new Date().toISOString().split('T')[0]}.png`;
+      link.click();
+    }
+    
+    // Logout function
+    function logoutUser() {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>

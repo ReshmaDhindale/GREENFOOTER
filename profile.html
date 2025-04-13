@@ -1,140 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🌿 Family Profile | CarbonCalc+</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>User Profile - GreenFooter</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
       margin: 0;
-      background: #edf2f7;
-      color: #2d3748;
+      font-family: Arial, sans-serif;
+      background-color: #f0fff4;
     }
 
-    .container {
-      max-width: 600px;
-      margin: auto;
+    .main-content {
+      margin-left: 250px;
       padding: 2rem;
     }
 
-    h1 {
+    h1, h2 {
       color: #2f855a;
-      margin-bottom: 1rem;
     }
 
-    .profile-box {
+    .profile-section {
       background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
     }
 
-    label {
-      font-weight: 500;
-      margin-top: 1rem;
+    .profile-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .profile-form label {
       display: block;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      border: 1px solid #cbd5e0;
-      border-radius: 8px;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #2f855a;
-      color: white;
+      margin-bottom: 0.5rem;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      color: #2f855a;
     }
 
-    button:hover {
-      background-color: #276749;
-    }
-
-    .stat {
-      margin-top: 2rem;
+    .profile-form input, .profile-form select {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
       font-size: 1rem;
-      color: #4a5568;
     }
 
-    nav {
-      background: #2f855a;
-      padding: 1rem;
+    .profile-form input:focus, .profile-form select:focus {
+      border-color: #38a169;
+      outline: none;
     }
 
-    nav a {
+    .full-width {
+      grid-column: 1 / 3;
+    }
+
+    .btn {
+      background: #38a169;
       color: white;
-      margin-right: 1rem;
-      text-decoration: none;
-      font-weight: 500;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    nav a:hover {
-      text-decoration: underline;
+    .btn:hover {
+      background: #2f855a;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #38a169;
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      color: #666;
     }
   </style>
 </head>
 <body>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html"><span>📊 Reports</span></a>
+      <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html" class="active"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
+  </nav>
 
-<nav>
-  <a href="index.html">🏠 Dashboard</a>
-  <a href="members.html">👨‍👩‍👧 Members</a>
-  <a href="leaderboard.html">🏆 Leaderboard</a>
-  <a href="report.html">📊 Reports</a>
-  <a href="offset.html">🌳 Offset</a>
-</nav>
-
-<div class="container">
-  <h1>👤 Family Profile</h1>
-
-  <div class="profile-box">
-    <label for="familyName">Family Name:</label>
-    <input type="text" id="familyName" placeholder="Enter your family name" />
-
-    <button onclick="saveProfile()">💾 Save Profile</button>
-
-    <div class="stat" id="memberCount">👨‍👩‍👧‍👦 Total Members: 0</div>
-    <div class="stat" id="lastEmission">🌍 Last Recorded Emission: -</div>
+  <div class="main-content">
+    <h1>👤 User Profile</h1>
+    
+    <div class="profile-stats">
+      <div class="stat-card">
+        <div class="stat-label">Carbon Footprint</div>
+        <div class="stat-value" id="userCarbonFootprint">0</div>
+        <div>kg CO₂ per day</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Family Members</div>
+        <div class="stat-value" id="userFamilyCount">0</div>
+        <div>people</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Emissions Saved</div>
+        <div class="stat-value" id="userEmissionsSaved">0</div>
+        <div>kg CO₂ this month</div>
+      </div>
+    </div>
+    
+    <div class="profile-section">
+      <h2>Profile Information</h2>
+      <form id="profileForm" class="profile-form">
+        <div>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required disabled>
+        </div>
+        <div>
+          <label for="familyName">Family Name</label>
+          <input type="text" id="familyName" name="familyName">
+        </div>
+        <div>
+          <label for="householdSize">Household Size</label>
+          <input type="number" id="householdSize" name="householdSize" min="1" max="10">
+        </div>
+        <div>
+          <label for="homeSize">Home Size (sq ft)</label>
+          <input type="number" id="homeSize" name="homeSize" min="100">
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <input type="text" id="location" name="location">
+        </div>
+        <div class="full-width">
+          <button type="submit" class="btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="profile-section">
+      <h2>Change Password</h2>
+      <form id="passwordForm" class="profile-form">
+        <div>
+          <label for="currentPassword">Current Password</label>
+          <input type="password" id="currentPassword" name="currentPassword" required>
+        </div>
+        <div>
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" name="newPassword" required>
+        </div>
+        <div class="full-width">
+          <button type="submit" class="btn">Update Password</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const nameField = document.getElementById("familyName");
-    const memberCount = document.getElementById("memberCount");
-    const lastEmission = document.getElementById("lastEmission");
-
-    // Load saved family name
-    nameField.value = localStorage.getItem("familyName") || "";
-
-    // Load member count
-    const members = JSON.parse(localStorage.getItem("members")) || [];
-    memberCount.textContent = `👨‍👩‍👧‍👦 Total Members: ${members.length}`;
-
-    // Load last emission record
-    const emissions = JSON.parse(localStorage.getItem("emissions")) || [];
-    if (emissions.length > 0) {
-      const last = emissions[emissions.length - 1];
-      lastEmission.textContent = `🌍 Last Recorded Emission: ${last.total.toFixed(2)} kg on ${new Date(last.date).toLocaleDateString()}`;
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("userToken");
+      
+      // Redirect if not logged in
+      if (!token) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      // Update sidebar user information
+      function updateSidebarUserInfo() {
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+        const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+        
+        // Update user information
+        document.getElementById("sidebarUserName").textContent = userData.fullName || "User Name";
+        document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+        document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+        document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+        
+        // Also update profile stats
+        document.getElementById("userCarbonFootprint").textContent = parseFloat(carbonValue).toFixed(1);
+        document.getElementById("userFamilyCount").textContent = memberCount;
+        
+        // Calculate emissions saved (10% reduction goal from baseline)
+        const baseline = parseFloat(carbonValue) * 30; // Monthly baseline
+        const saved = baseline * 0.1; // Assume 10% savings so far
+        document.getElementById("userEmissionsSaved").textContent = saved.toFixed(1);
+        
+        // Fill profile form
+        document.getElementById("fullName").value = userData.fullName || "";
+        document.getElementById("email").value = userData.email || "";
+        document.getElementById("familyName").value = userData.familyName || "";
+        document.getElementById("householdSize").value = userData.householdSize || "1";
+        document.getElementById("homeSize").value = userData.homeSize || "";
+        document.getElementById("location").value = userData.location || "";
+      }
+      
+      // Update profile on load
+      updateSidebarUserInfo();
+      
+      // Handle profile form submission
+      document.getElementById("profileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+          fullName: document.getElementById("fullName").value,
+          familyName: document.getElementById("familyName").value,
+          householdSize: document.getElementById("householdSize").value,
+          homeSize: document.getElementById("homeSize").value,
+          location: document.getElementById("location").value
+        };
+        
+        try {
+          const response = await fetch("http://localhost:3000/api/users/profile", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(formData)
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            localStorage.setItem("userData", JSON.stringify(result.data));
+            alert("Profile updated successfully!");
+            updateSidebarUserInfo();
+          } else {
+            alert("Failed to update profile. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          alert("An error occurred while updating profile.");
+        }
+      });
+      
+      // Handle password form submission
+      document.getElementById("passwordForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const passwordData = {
+          currentPassword: document.getElementById("currentPassword").value,
+          newPassword: document.getElementById("newPassword").value
+        };
+        
+        try {
+          const response = await fetch("http://localhost:3000/api/users/password", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(passwordData)
+          });
+          
+          if (response.ok) {
+            alert("Password updated successfully!");
+            document.getElementById("passwordForm").reset();
+          } else {
+            alert("Failed to update password. Please check your current password.");
+          }
+        } catch (error) {
+          console.error("Error updating password:", error);
+          alert("An error occurred while updating password.");
+        }
+      });
+    });
+    
+    // Logout function
+    function logoutUser() {
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
+      window.location.href = "index.html";
     }
-  });
-
-  function saveProfile() {
-    const name = document.getElementById("familyName").value.trim();
-    if (name) {
-      localStorage.setItem("familyName", name);
-      alert("✅ Family profile updated!");
-    }
-  }
-</script>
-
+  </script>
 </body>
 </html>

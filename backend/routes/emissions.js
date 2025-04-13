@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const Emission = require('../models/Emission');
 const User = require('../models/User');
 
+// Get JWT secret from config
+const JWT_SECRET = process.env.JWT_SECRET || require('config').get('jwtSecret');
+
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -12,8 +15,8 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    req.userId = decoded.userId;
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.userId = decoded.userId || decoded.user.id;
     next();
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
@@ -182,6 +185,128 @@ router.post('/import', verifyToken, async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error importing emissions data', error: error.message });
+  }
+});
+
+// Store a carbon footprint submission
+router.post('/carbon-footprint', verifyToken, async (req, res) => {
+  try {
+    const { 
+      carbonFootprint, 
+      date,
+      details // Optional object containing calculation details
+    } = req.body;
+
+    if (!carbonFootprint || typeof carbonFootprint !== 'number') {
+      return res.status(400).json({ message: 'Valid carbon footprint value is required' });
+    }
+
+    // Find user and update their emissions record
+    const user = await User.findById(req.userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Initialize emissions array if it doesn't exist
+    if (!user.emissions) {
+      user.emissions = [];
+    }
+
+    // Add new emission record
+    user.emissions.push({
+      value: carbonFootprint,
+      date: date || new Date(),
+      details: details || {}
+    });
+
+    // Keep only the last 30 records if there are too many
+    if (user.emissions.length > 30) {
+      user.emissions = user.emissions.slice(-30);
+    }
+
+    // Calculate average carbon footprint
+    const totalEmissions = user.emissions.reduce((sum, emission) => sum + emission.value, 0);
+    const averageEmission = user.emissions.length > 0 ? totalEmissions / user.emissions.length : 0;
+    
+    // Update user's average carbon footprint
+    user.averageCarbonFootprint = averageEmission;
+
+    await user.save();
+
+    res.status(201).json({
+      message: 'Carbon footprint recorded successfully',
+      emissions: user.emissions,
+      average: averageEmission
+    });
+  } catch (error) {
+    console.error('Error saving carbon footprint:', error);
+    res.status(500).json({ message: 'Error saving carbon footprint', error: error.message });
+  }
+});
+
+// Get user's carbon footprint history
+router.get('/carbon-footprint', verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const emissions = user.emissions || [];
+    const average = user.averageCarbonFootprint || 0;
+
+    res.json({
+      emissions,
+      average,
+      total: emissions.reduce((sum, emission) => sum + emission.value, 0)
+    });
+  } catch (error) {
+    console.error('Error fetching carbon footprint:', error);
+    res.status(500).json({ message: 'Error fetching carbon footprint', error: error.message });
+  }
+});
+
+// Get carbon footprint data
+router.get('/carbon-footprint', verifyToken, async (req, res) => {
+  try {
+    // Query all user's emissions
+    const emissions = await Emission.find({ userId: req.userId });
+    
+    // Calculate total
+    const total = emissions.reduce((sum, emission) => sum + emission.co2e, 0);
+    
+    // Calculate average per entry
+    const average = emissions.length > 0 ? total / emissions.length : 0;
+    
+    // Find latest submission
+    const latest = await Emission.findOne({ userId: req.userId })
+      .sort({ date: -1 });
+    
+    // Get entries by date for trend analysis
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const recentEmissions = await Emission.find({
+      userId: req.userId,
+      date: { $gte: lastMonth }
+    }).sort({ date: 1 });
+    
+    const trend = recentEmissions.map(em => ({
+      date: em.date,
+      value: em.co2e
+    }));
+    
+    res.json({
+      total,
+      average,
+      latest: latest || null,
+      trend,
+      emissionsCount: emissions.length
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching carbon footprint data', error: error.message });
   }
 });
 

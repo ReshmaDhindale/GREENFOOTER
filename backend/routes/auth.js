@@ -3,58 +3,76 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const { check, validationResult } = require('express-validator');
 
-// Register new user
-router.post('/register', async (req, res) => {
+// Use environment variable or fallback to a default secret for JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'greenfooter-jwt-secret-for-development';
+
+// Register a new user
+router.post('/register', [
+  check('username', 'Username is required').not().isEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+], async (req, res) => {
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // Extract user data from request
+  const { username, email, password, fullName } = req.body;
+
   try {
-    const { username, email, password, fullName, birthDate, familyName, householdSize, homeSize, appliances } = req.body;
-    console.log(username, email, password, fullName, birthDate, familyName, householdSize, homeSize, appliances);
     // Check if user already exists
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: 'Username or email already exists' });
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists with this email' });
+    }
+
+    user = await User.findOne({ username });
+    if (user) {
+      return res.status(400).json({ msg: 'Username is already taken' });
     }
 
     // Create new user
-    const user = new User({
+    user = new User({
       username,
       email,
-      password, // The pre-save hook in the User model will hash this
+      password,
       fullName,
-      birthDate,
-      familyName: familyName || 'Default Family',
-      householdSize: householdSize || 1, 
-      homeSize: homeSize || 100,
-      appliances: appliances || ['Refrigerator'],
-      lastLogin: new Date()
     });
 
+    // Save user to database
     await user.save();
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    res.status(201).json({
-      success: true,
-      message: 'User registered successfully',
-      token,
+    const payload = {
       user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        fullName: user.fullName
+        id: user.id
       }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error registering user', 
-      error: error.message 
-    });
+    };
+
+    jwt.sign(
+      payload,
+      JWT_SECRET,
+      { expiresIn: '7d' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ 
+          token,
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            fullName: user.fullName
+          }
+        });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
 });
 
@@ -94,7 +112,7 @@ router.post('/login', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
+      JWT_SECRET,
       { expiresIn: '24h' }
     );
 
@@ -126,7 +144,7 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ success: false, message: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decoded.userId).select('-password');
 
     if (!user) {
@@ -154,7 +172,7 @@ router.put('/profile', async (req, res) => {
       return res.status(401).json({ message: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decoded.userId);
 
     if (!user) {
@@ -162,11 +180,8 @@ router.put('/profile', async (req, res) => {
     }
 
     // Update user fields
-    const { familyName, householdSize, homeSize, appliances } = req.body;
-    user.familyName = familyName || user.familyName;
-    user.householdSize = householdSize || user.householdSize;
-    user.homeSize = homeSize || user.homeSize;
-    user.appliances = appliances || user.appliances;
+    const { fullName } = req.body;
+    if (fullName) user.fullName = fullName;
 
     await user.save();
 
@@ -176,10 +191,7 @@ router.put('/profile', async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
-        familyName: user.familyName,
-        householdSize: user.householdSize,
-        homeSize: user.homeSize,
-        appliances: user.appliances
+        fullName: user.fullName
       }
     });
   } catch (error) {

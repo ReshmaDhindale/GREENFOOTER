@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const emissionRoutes = require('./routes/emissions');
 const familyRoutes = require('./routes/family');
 const challengeRoutes = require('./routes/challenge');
+const userRoutes = require('./routes/userRoutes');
 
 // Initialize Express app
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/emissions', emissionRoutes);
 app.use('/api/family', familyRoutes);
 app.use('/api/challenges', challengeRoutes);
+app.use('/api/user', userRoutes);
 
 // Home route
 app.get('/', (req, res) => {

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>GREEN FOOTER - Carbon Footprint Calculator</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
     * {
       margin: 0;
@@ -23,7 +24,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 5%;
+      padding: 1.1rem 2%;
       background-color: #ffffff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       position: fixed;
@@ -327,17 +328,21 @@
       height: 100%;
       background-color: rgba(0,0,0,0.6);
       animation: fadeIn 0.3s;
+      overflow-y: auto;
     }
     
     .modal-content {
       background: white;
-      margin: 5% auto;
+      margin: 2% auto;
       width: 90%;
       max-width: 400px;
       border-radius: 12px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.2);
       animation: slideUp 0.5s;
       padding: 2rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     
     @keyframes slideUp {
@@ -420,22 +425,21 @@
     .dashboard body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
-      background: #1a202c;
-      color: #e2e8f0;
+      background: #f0fff4;
+      color: #2d3748;
       transition: all 0.3s ease;
     }
     
     .dashboard h1, .dashboard h2, .dashboard legend {
-      color: #68d391;
+      color: #2f855a;
     }
     
     .dashboard .form-card {
-      background: #2d3748;
+      background: white;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       padding: 1.5rem;
-      margin-top: 2rem;
-      animation: fadeIn 0.5s ease-in-out;
+      margin-bottom: 2rem;
     }
     
     .dashboard .form-card fieldset {
@@ -447,30 +451,31 @@
     .dashboard label {
       display: block;
       margin: 1rem 0 0.5rem;
+      color: #4a5568;
     }
     
     .dashboard input, .dashboard select {
       width: 100%;
       padding: 0.6rem;
-      border-radius: 6px;
-      border: none;
+      border-radius: 5px;
+      border: 1px solid #e2e8f0;
       font-size: 1rem;
-      background-color: #4a5568;
-      color: white;
+      background-color: white;
+      color: #2d3748;
     }
     
     .dashboard input:focus, .dashboard select:focus {
       outline: none;
-      background-color: #2c7a7b;
+      border-color: #2f855a;
     }
     
     .dashboard button {
       padding: 0.75rem 1.5rem;
-      background-color: #68d391;
-      color: #1a202c;
+      background-color: #2f855a;
+      color: white;
       font-weight: bold;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 1rem;
       cursor: pointer;
       margin: 1rem 0.5rem 0 0;
@@ -478,42 +483,41 @@
     }
     
     .dashboard button:hover {
-      background-color: #48bb78;
+      background-color: #38a169;
     }
     
-    .sidebar {
-      width: 220px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      background: #2f855a;
-      color: white;
-      padding: 1.5rem 1rem;
-      z-index: 1000;
+    .form-navigation {
+      display: flex;
+      margin-top: 1.5rem;
     }
     
-    .sidebar h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+    .section-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
     }
     
-    .sidebar a {
-      display: block;
-      padding: 0.6rem 0;
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-    }
-    
-    .sidebar a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+    .section-tabs button {
+      background-color: #e2e8f0;
+      color: #4a5568;
+      padding: 0.5rem 1rem;
       border-radius: 5px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
     
-    .main {
-      margin-left: 240px;
-      padding: 2rem;
+    .section-tabs button.active {
+      background-color: #2f855a;
+      color: white;
+    }
+    
+    .calculator-step legend {
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #2f855a;
+      font-size: 1.1rem;
     }
     
     .calculator-step {
@@ -530,33 +534,60 @@
       color: #f6e05e;
     }
     
-    .section-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    
-    .section-tabs button {
-      background-color: #4a5568;
-      color: #f7fafc;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      border: none;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    
-    .section-tabs button.active {
-      background-color: #68d391;
-      color: #1a202c;
-    }
-    
     .error-message {
       color: #e53e3e;
       margin-top: 0.5rem;
       font-size: 0.9rem;
       text-align: center;
+    }
+
+    /* Define main-content for dashboard */
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .button.secondary {
+      background-color: #e2e8f0;
+      color: #4a5568;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    
+    .button.secondary:hover {
+      background-color: #cbd5e0;
+    }
+    
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-bottom: 1px solid #e2e8f0;
+      align-items: center;
+    }
+    
+    .history-date {
+      font-weight: bold;
+    }
+    
+    .history-value {
+      color: #2f855a;
+      font-weight: bold;
+    }
+    
+    .empty-history {
+      text-align: center;
+      padding: 1rem;
+      color: #718096;
+      font-style: italic;
     }
   </style>
 </head>
@@ -571,10 +602,8 @@
         <a href="#how">How It Works</a>
         <a href="#testimonials">Testimonials</a>
       </div>
-      <div class="auth-buttons">
-        <button class="login-btn" onclick="openLoginModal()">Login</button>
-        <button class="signup-btn" onclick="openRegisterModal()">Sign Up</button>
-        <!-- <a href="#" class="dashboard-btn" onclick="showDashboard()">Dashboard</a> -->
+      <div class="auth-buttons" id="authButtons">
+        <!-- This div will be dynamically updated based on login status -->
       </div>
     </nav>
 
@@ -585,7 +614,6 @@
         <p>Join thousands of families making a positive impact on the environment with our easy-to-use carbon calculator.</p>
         <div class="hero-buttons">
           <button class="primary-btn" onclick="openRegisterModal()">Get Started</button>
-          <a href="#" class="primary-btn" onclick="showDashboard()">Go to Dashboard</a>
           <button class="secondary-btn" onclick="scrollToFeatures()">Learn More</button>
         </div>
       </div>
@@ -697,16 +725,42 @@
   <!-- Dashboard Content -->
   <div id="dashboard-content" class="dashboard">
     <nav class="sidebar">
-      <h2>🌱 CarbonCalc+</h2>
-      <a href="#" onclick="showHomeFromDashboard()">🏠 Home</a>
-      <a href="members.html">👨‍👩‍👧‍👦 Family Members</a>
-      <a href="report.html">📊 Reports</a>
-      <a href="leaderboard.html">🏆 Leaderboard</a>
-      <a href="offset.html">🌳 Offset</a>
-      <a href="#" onclick="logoutUser()">🚪 Logout</a>
+      <div class="sidebar-header">
+        <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+      </div>
+      
+      <div class="sidebar-user">
+        <div class="user-avatar">👤</div>
+        <div class="user-name" id="sidebarUserName">User Name</div>
+        <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+        <div class="user-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="sidebarCarbonValue">0</div>
+            <div>kg/day</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="sidebarFamilyMembers">0</div>
+            <div>Members</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-nav">
+        <a href="index.html" class="active"><span>🏠 Dashboard</span></a>
+        <a href="members.html"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+        <a href="report.html"><span>📊 Reports</span></a>
+        <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+        <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+        <a href="profile.html"><span>👤 Profile</span></a>
+        <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+      </div>
+      
+      <div class="sidebar-footer">
+        GreenFooter &copy; 2023
+      </div>
     </nav>
 
-    <div class="main fade-in">
+    <div class="main-content fade-in">
       <h1>🌿 Welcome to Your Family Carbon Dashboard</h1>
       <p>Track and reduce your household carbon emissions. Let's begin!</p>
 
@@ -716,7 +770,7 @@
       
       <div class="form-card">
         <div class="section-tabs">
-          <button onclick="goToStep(0)" id="tab0">🏠 Home Energy</button>
+          <button onclick="goToStep(0)" id="tab0" class="active">🏠 Home Energy</button>
           <button onclick="goToStep(1)" id="tab1">🚗 Transportation</button>
           <button onclick="goToStep(2)" id="tab2">💧 Water Usage</button>
           <button onclick="goToStep(3)" id="tab3">🗑️ Waste & Recycling</button>
@@ -804,12 +858,26 @@
         </ul>
       </div>
       
+      <!-- Carbon History Section -->
+      <div class="form-card" style="margin-top: 2rem;">
+        <div class="section-header">
+          <h2>📊 Your Carbon Footprint History</h2>
+          <button class="button secondary" id="viewHistoryBtn" onclick="toggleCarbonHistory()">View History</button>
+        </div>
+        
+        <div id="carbonHistorySection" style="display: none;">
+          <p>Track your progress over time:</p>
+          <div id="carbonHistoryList" style="margin-top: 1rem;">
+            <div class="empty-history">Submit a carbon calculation to start tracking your history!</div>
+          </div>
+        </div>
+      </div>
+      
       <!-- Submission Summary Panel -->
       <div id="submissionSection" style="display: none; text-align: center; margin-top: 2rem;">
         <h2>✅ Submission Successful!</h2>
         <p style="font-size: 1.2rem;">🎉 Your total estimated daily carbon footprint is:</p>
         <h1 style="font-size: 2.5rem; color: #f6e05e;" id="finalCO2"></h1>
-        <button onclick="window.location.href='report.html'" style="background-color:#f6ad55; color:#1a202c; font-size: 1.1rem; padding: 0.75rem 2rem; border-radius: 8px; margin-top: 1rem; font-weight: bold;">📊 View Report</button>
       </div>
     </div>
   </div>
@@ -821,10 +889,6 @@
       <h2>🌱 Login to GREEN FOOTER</h2>
       <input type="text" id="loginUser" placeholder="Username" required>
       <input type="password" id="loginPass" placeholder="Password" required>
-      <div class="checkbox-row">
-        <input type="checkbox" id="rememberMe">
-        <label for="rememberMe">Remember Me</label>
-      </div>
       <div id="loginError" class="error-message"></div>
       <button onclick="doLogin()">Login</button>
       <div class="modal-footer">
@@ -838,14 +902,11 @@
     <div class="modal-content">
       <span class="close" onclick="closeRegisterModal()">&times;</span>
       <h2>🌿 Create Your Account</h2>
-      <input type="text" id="fullName" placeholder="Full Name" required>
-      <input type="email" id="email" placeholder="Email Address" required>
-      <input type="date" id="birthDate" placeholder="Birth Date" required>
       <input type="text" id="newUser" placeholder="Username" required>
+      <input type="email" id="email" placeholder="Email Address" required>
       <input type="password" id="newPass" placeholder="Password" required>
-      <input type="text" id="familyName" placeholder="Family Name" required>
-      <input type="number" id="householdSize" placeholder="Household Size" min="1" value="1" required>
-      <input type="number" id="homeSize" placeholder="Home Size (sq ft)" min="100" value="1000" required>
+      <p class="form-note">The following field is optional:</p>
+      <input type="text" id="fullName" placeholder="Full Name">
       <div id="registerError" class="error-message"></div>
       <button onclick="registerUser()">Register</button>
       <div class="modal-footer">
@@ -856,11 +917,37 @@
 
   <script>
     // Display logic
+    function updateAuthButtons() {
+      const authButtons = document.getElementById("authButtons");
+      const token = localStorage.getItem("userToken");
+      
+      if (token) {
+        // User is logged in
+        authButtons.innerHTML = `
+          <a href="#" class="dashboard-btn" onclick="showDashboard()">Go to Dashboard</a>
+          <button class="login-btn" onclick="logoutUser()">Logout</button>
+        `;
+      } else {
+        // User is not logged in
+        authButtons.innerHTML = `
+          <button class="login-btn" onclick="openLoginModal()">Login</button>
+          <button class="signup-btn" onclick="openRegisterModal()">Sign Up</button>
+        `;
+      }
+    }
+
     function showDashboard() {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        alert("Please login to access the dashboard");
+        openLoginModal();
+        return;
+      }
       document.getElementById("home-content").style.display = "none";
       document.getElementById("dashboard-content").style.display = "block";
-      document.body.style.background = "#1a202c";
-      document.body.style.color = "#e2e8f0";
+      document.body.style.background = "#f0fff4";
+      document.body.style.color = "#2d3748";
+      updateSidebarUserInfo();
     }
     
     function showHomeFromDashboard() {
@@ -868,6 +955,7 @@
       document.getElementById("home-content").style.display = "block";
       document.body.style.background = "#f7fafc";
       document.body.style.color = "#2d3748";
+      updateAuthButtons();
     }
     
     // Modal functions
@@ -919,40 +1007,314 @@
     }
 
     function goToStep(step) {
+      if (step >= 0 && step < steps.length) {
       currentStep = step;
       showStep(step);
-      estimateCarbon();
+      }
     }
+
+    // Add event listeners for prev and next buttons
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        goToStep(currentStep - 1);
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < steps.length - 1) {
+        goToStep(currentStep + 1);
+      }
+    });
 
     function estimateCarbon() {
       const bulbs = +document.getElementById("bulbCount").value || 0;
       const wattage = +document.getElementById("bulbWattage").value || 0;
       const hours = +document.getElementById("bulbHours").value || 0;
       const distance = +document.getElementById("distance").value || 0;
+      const vehicleType = document.getElementById("vehicleType").value;
       const shower = +document.getElementById("showerMinutes").value || 0;
+      const laundry = +document.getElementById("laundryLoads").value || 0;
       const trash = +document.getElementById("trashBags").value || 0;
+      const dietType = document.getElementById("dietType").value;
+      const clothing = +document.getElementById("clothingPurchases").value || 0;
+      const electronics = +document.getElementById("electronicsPurchases").value || 0;
 
-      let co2 = (bulbs * wattage * hours * 0.001) + (distance * 0.21) + (shower * 0.05) + (trash * 0.3);
-      liveCO2.textContent = co2.toFixed(2);
+      // Create calculation details object
+      const details = {
+        electricity: {
+          bulbs: bulbs * wattage * hours * 0.001 * 0.42, // kWh * CO2 factor
+        },
+        transportation: {
+          distance: distance,
+          type: vehicleType
+        },
+        water: {
+          shower: shower,
+          laundry: laundry
+        },
+        waste: {
+          trash: trash
+        },
+        consumption: {
+          diet: dietType,
+          clothing: clothing,
+          electronics: electronics
+        }
+      };
+
+      // Make API call
+      fetch('http://127.0.0.1:8000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bulb_count: bulbs,
+          bulb_wattage: wattage,
+          bulb_hours: hours,
+          ac_hours: 0,
+          ac_wattage: 0,
+          distance: distance,
+          vehicle_type: vehicleType,
+          shower_minutes: shower,
+          laundry_loads: laundry,
+          trash_bags: trash,
+          diet_type: dietType,
+          clothing_purchases: clothing,
+          electronics_purchases: electronics,
+          flights_per_year: 0
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          liveCO2.textContent = "Error: " + data.error;
+          document.getElementById("finalCO2").textContent = "Error calculating";
+          return;
+        }
+        
+        // Update live CO2 display
+        liveCO2.textContent = data.carbon_footprint.toFixed(2);
+        
+        // Store carbon footprint in localStorage for backward compatibility
+        localStorage.setItem("carbonFootprint", data.carbon_footprint.toFixed(2));
+        
+        // Store in database
+        saveCarbonFootprintToDatabase(data.carbon_footprint, details);
+        
+        // Update final CO2 display
+        document.getElementById("finalCO2").textContent = data.carbon_footprint.toFixed(2) + " kg/day";
+        
+        // Show alert if carbon footprint is high
+        const alertBox = document.getElementById("alertBox");
+        if (data.carbon_footprint > 50) {
+          alertBox.style.display = "block";
+        } else {
+          alertBox.style.display = "none";
+        }
+        
+        // Update recommendations
+        updateRecommendations(data.carbon_footprint);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        liveCO2.textContent = "Error calculating";
+        document.getElementById("finalCO2").textContent = "Error calculating";
+      });
     }
 
-    nextBtn.onclick = () => {
-      if (currentStep < steps.length - 1) {
-        currentStep++;
-        showStep(currentStep);
-        estimateCarbon();
+    // Save carbon footprint to database
+    async function saveCarbonFootprintToDatabase(carbonFootprint, details) {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        console.warn("User not logged in, can't save to database");
+        // Still store locally
+        storeCarbonSubmission(carbonFootprint);
+        return;
       }
-    };
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/emissions/carbon-footprint', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            carbonFootprint: carbonFootprint,
+            date: new Date(),
+            details: details
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          console.log("Carbon footprint saved to database:", data);
+          // Update sidebar with the TOTAL from server instead of average
+          document.getElementById("sidebarCarbonValue").textContent = data.total.toFixed(1);
+        } else {
+          console.error("Error saving carbon footprint:", data.message);
+          // Fallback to local storage
+          storeCarbonSubmission(carbonFootprint);
+        }
+      } catch (error) {
+        console.error("Error saving carbon footprint:", error);
+        // Fallback to local storage
+        storeCarbonSubmission(carbonFootprint);
+      }
+    }
 
-    prevBtn.onclick = () => {
-      if (currentStep > 0) {
-        currentStep--;
-        showStep(currentStep);
-        estimateCarbon();
+    // Fetch carbon footprint history from database
+    async function fetchCarbonFootprintFromDatabase() {
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        console.warn("User not logged in, can't fetch from database");
+        return null;
       }
-    };
-    
-    // Login function from login.html
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/emissions/carbon-footprint', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Carbon footprint fetched from database:", data);
+          
+          // Update sidebar with the TOTAL from server instead of average
+          document.getElementById("sidebarCarbonValue").textContent = data.total.toFixed(1);
+          
+          return data;
+        } else {
+          console.error("Error fetching carbon footprint:", await response.text());
+          return null;
+        }
+      } catch (error) {
+        console.error("Error fetching carbon footprint:", error);
+        return null;
+      }
+    }
+
+    // Store carbon footprint submission in localStorage (fallback method)
+    function storeCarbonSubmission(carbonValue) {
+      // Get current user
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      const userId = userData.id;
+      
+      if (!userId) return; // User not logged in
+      
+      // Get existing submissions or initialize new array
+      const allSubmissions = JSON.parse(localStorage.getItem("carbonSubmissions") || "{}");
+      
+      // Initialize user's submissions if they don't exist
+      if (!allSubmissions[userId]) {
+        allSubmissions[userId] = [];
+      }
+      
+      // Add new submission with timestamp
+      allSubmissions[userId].push({
+        value: carbonValue,
+        timestamp: new Date().toISOString(),
+        date: new Date().toLocaleDateString()
+      });
+      
+      // Keep only the last 30 submissions
+      if (allSubmissions[userId].length > 30) {
+        allSubmissions[userId] = allSubmissions[userId].slice(-30);
+      }
+      
+      // Save back to localStorage
+      localStorage.setItem("carbonSubmissions", JSON.stringify(allSubmissions));
+      
+      // Update sidebar (uses local calculation as fallback)
+      updateTotalCarbonFootprint();
+    }
+
+    // Calculate and update total carbon footprint
+    function updateTotalCarbonFootprint() {
+      // Try to fetch from database first
+      fetchCarbonFootprintFromDatabase().then(data => {
+        if (data) {
+          // Already updated in fetchCarbonFootprintFromDatabase
+          return;
+        }
+        
+        // Fallback to local calculation
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const userId = userData.id;
+        
+        if (!userId) {
+          // Fallback to most recent submission if user not logged in
+          const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+          document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+          return;
+        }
+        
+        // Get user's submissions
+        const allSubmissions = JSON.parse(localStorage.getItem("carbonSubmissions") || "{}");
+        const userSubmissions = allSubmissions[userId] || [];
+        
+        if (userSubmissions.length === 0) {
+          document.getElementById("sidebarCarbonValue").textContent = "0.0";
+          return;
+        }
+        
+        // Calculate total of all submissions (not average)
+        const total = userSubmissions.reduce((sum, submission) => sum + submission.value, 0);
+        
+        // Update sidebar with total instead of average
+        document.getElementById("sidebarCarbonValue").textContent = total.toFixed(1);
+      });
+    }
+
+    function updateRecommendations(carbonFootprint) {
+      const recommendationsList = document.getElementById("recommendationsList");
+      recommendationsList.innerHTML = ""; // Clear existing recommendations
+      
+      // Add recommendations based on carbon footprint
+      if (carbonFootprint > 50) {
+        recommendationsList.innerHTML += `
+          <li>⚠️ Your carbon footprint is above average. Consider these tips:</li>
+          <li>💡 Switch to LED bulbs to reduce energy consumption</li>
+          <li>🚶‍♂️ Try walking or cycling for short distances</li>
+          <li>🚿 Reduce shower time by 2 minutes to save water</li>
+          <li>♻️ Increase recycling to reduce waste</li>
+        `;
+      } else if (carbonFootprint > 30) {
+        recommendationsList.innerHTML += `
+          <li>✅ Your carbon footprint is moderate. Keep improving:</li>
+          <li>🌱 Consider a plant-based diet more often</li>
+          <li>🚌 Use public transportation when possible</li>
+          <li>🛍️ Buy only what you need to reduce waste</li>
+        `;
+      } else {
+        recommendationsList.innerHTML += `
+          <li>🌟 Great job! Your carbon footprint is low. Keep it up:</li>
+          <li>🌿 Continue your sustainable lifestyle</li>
+          <li>📢 Share your eco-friendly habits with others</li>
+          <li>🌍 Consider offsetting your remaining emissions</li>
+        `;
+      }
+    }
+
+    // Update form submission
+    document.getElementById("carbonForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("submissionSection").style.display = "block";
+      estimateCarbon(); // Calculate carbon footprint on final submission
+      
+      // Also refresh the carbon history if it's visible
+      if (document.getElementById("carbonHistorySection").style.display !== "none") {
+        displayCarbonHistory();
+      }
+    });
+
+    // Login function
     async function doLogin() {
       const username = document.getElementById("loginUser").value.trim();
       const password = document.getElementById("loginPass").value;
@@ -982,82 +1344,78 @@
           return;
         }
 
-        // Check if we received a token in the response
         if (!data.token) {
           errorElement.textContent = "Invalid response from server. Missing token.";
           console.error("Login response missing token:", data);
           return;
         }
 
-        // Store token in localStorage or localStorage
-        if (document.getElementById("rememberMe").checked) {
           localStorage.setItem("userToken", data.token);
           localStorage.setItem("userData", JSON.stringify(data.user));
-        } else {
-          localStorage.setItem("userToken", data.token);
-          localStorage.setItem("userData", JSON.stringify(data.user));
-        }
-        
+
         showDashboard();
+        loadInitialFamilyMembers();
         closeLoginModal();
+        updateAuthButtons(); // Update buttons after successful login
       } catch (error) {
         console.error("Login error:", error);
         errorElement.textContent = "Connection error. Please try again later.";
       }
     }
 
-    // Register function from register.html
+    // Register function
     async function registerUser() {
-      const fullName = document.getElementById("fullName").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const birthDate = document.getElementById("birthDate").value;
+      // Clear any previous user data for testing (remove this in production)
+      // localStorage.clear();
+      
       const username = document.getElementById("newUser").value.trim();
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("newPass").value;
-      const familyName = document.getElementById("familyName").value.trim();
-      const householdSize = +document.getElementById("householdSize").value || 1;
-      const homeSize = +document.getElementById("homeSize").value || 1000;
+      const fullName = document.getElementById("fullName").value.trim();
       const errorElement = document.getElementById("registerError");
       
-      // Clear previous error messages
       errorElement.textContent = "";
 
-      if (!fullName || !email || !birthDate || !username || !password || !familyName || !householdSize || !homeSize) {
-        errorElement.textContent = "Please fill in all required fields.";
+      if (!username || !email || !password) {
+        errorElement.textContent = "Username, email and password are required.";
         return;
       }
 
       try {
-        const response = await fetch('http://localhost:5000/api/auth/register', {
+        console.log("Sending registration data:", { username, email, password, fullName });
+        
+        // Add cache-busting parameter to prevent caching issues
+        const cacheParam = `?t=${new Date().getTime()}`;
+        
+        const response = await fetch(`http://localhost:5000/api/auth/register${cacheParam}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate'
           },
           body: JSON.stringify({
             username,
             email,
             password,
-            fullName,
-            birthDate,
-            familyName,
-            householdSize,
-            homeSize,
-            appliances: ['Refrigerator', 'Washing Machine', 'Television']
+            fullName
           })
         });
 
         const data = await response.json();
+        console.log("Registration response:", data);
         
         if (!response.ok) {
-          errorElement.textContent = data.message || "Registration failed. Please try again.";
+          errorElement.textContent = data.msg || data.message || (data.errors && data.errors[0]?.msg) || "Registration failed. Please try again.";
           return;
         }
 
-        // Store the token
         localStorage.setItem("userToken", data.token);
         localStorage.setItem("userData", JSON.stringify(data.user));
         
         showDashboard();
+        loadInitialFamilyMembers();
         closeRegisterModal();
+        updateAuthButtons(); // Update buttons after successful registration
       } catch (error) {
         console.error("Registration error:", error);
         errorElement.textContent = "Connection error. Please try again later.";
@@ -1067,46 +1425,147 @@
     function logoutUser() {
       localStorage.removeItem("userToken");
       localStorage.removeItem("userData");
-      alert("Logged out successfully!");
       showHomeFromDashboard();
+      updateAuthButtons(); // Update buttons after logout
     }
 
-    // Auto login check on page load
-    // window.onload = () => {
-    //   const token = localStorage.getItem("userToken") || localStorage.getItem("userToken");
+    // Update sidebar user information
+    function updateSidebarUserInfo() {
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
       
-    //   if (token) {
-    //     // Verify token validity with backend
-    //     fetch('http://localhost:5000/api/auth/me', {
-    //       headers: {
-    //         'Authorization': `Bearer ${token}`
-    //       }
-    //     })
-    //     .then(response => {
-    //       if (response.ok) {
-    //         showDashboard();
-    //       } else {
-    //         // Token invalid or expired, clear storage
-    //         localStorage.removeItem("userToken");
-    //         localStorage.removeItem("userData");
-    //         localStorage.removeItem("userToken");
-    //         localStorage.removeItem("userData");
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.error("Token verification error:", err);
-    //     });
-    //   }
+      // Update user information
+      document.getElementById("sidebarUserName").textContent = userData.username || userData.fullName || "User";
+      document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+      document.getElementById("sidebarFamilyMembers").textContent = memberCount;
       
-    //   document.getElementById("carbonForm").addEventListener("input", estimateCarbon);
-    //   document.getElementById("carbonForm").addEventListener("submit", function(e) {
-    //     e.preventDefault();
-    //     document.getElementById("submissionSection").style.display = "block";
-    //     document.getElementById("finalCO2").textContent = liveCO2.textContent + " kg/day";
-    //   });
+      // Update carbon value using the new function
+      updateTotalCarbonFootprint();
+    }
+    
+    // Load family members if they don't exist in localStorage yet
+    function loadInitialFamilyMembers() {
+      if (!localStorage.getItem("members")) {
+        // Create default self member if user is logged in
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        if (userData.username) {
+          const defaultMember = {
+            id: 'member_' + Date.now(),
+            name: userData.fullName || userData.username,
+            age: 30,
+            relation: 'Self',
+            footprint: localStorage.getItem("carbonFootprint") || "0"
+          };
+          
+          localStorage.setItem("members", JSON.stringify([defaultMember]));
+        } else {
+          localStorage.setItem("members", JSON.stringify([]));
+        }
+      }
       
-    //   showStep(currentStep);
-    // };
+      // Update the sidebar to show the member count
+      updateSidebarUserInfo();
+    }
+    
+    // Check token on page load
+    window.onload = () => {
+      const token = localStorage.getItem("userToken");
+      if (token) {
+        showDashboard();
+        loadInitialFamilyMembers();
+        updateSidebarUserInfo();
+        updateTotalCarbonFootprint(); // Update carbon footprint display
+      } else {
+        showHomeFromDashboard();
+      }
+      
+      updateAuthButtons();
+      
+      // Initialize with default values
+      liveCO2.textContent = "0.00";
+      document.getElementById("finalCO2").textContent = "0.00 kg/day";
+      document.getElementById("recommendationsList").innerHTML = `
+        <li>✅ Fill in your details and submit to see your carbon footprint and recommendations!</li>
+      `;
+      showStep(currentStep);
+    };
+
+    // Toggle carbon history section
+    function toggleCarbonHistory() {
+      const historySection = document.getElementById("carbonHistorySection");
+      const historyBtn = document.getElementById("viewHistoryBtn");
+      
+      if (historySection.style.display === "none") {
+        historySection.style.display = "block";
+        historyBtn.textContent = "Hide History";
+        displayCarbonHistory();
+      } else {
+        historySection.style.display = "none";
+        historyBtn.textContent = "View History";
+      }
+    }
+    
+    // Display carbon history in the UI
+    function displayCarbonHistory() {
+      const historyList = document.getElementById("carbonHistoryList");
+      
+      // Try to fetch from database first
+      fetchCarbonFootprintFromDatabase().then(data => {
+        if (data && data.emissions && data.emissions.length > 0) {
+          // Sort emissions by date (newest first)
+          const sortedEmissions = [...data.emissions].sort((a, b) => new Date(b.date) - new Date(a.date));
+          
+          // Create HTML for history items
+          let historyHTML = "";
+          sortedEmissions.forEach(emission => {
+            const date = new Date(emission.date).toLocaleDateString();
+            historyHTML += `
+              <div class="history-item">
+                <div class="history-date">${date}</div>
+                <div class="history-value">${emission.value.toFixed(2)} kg/day</div>
+              </div>
+            `;
+          });
+          
+          historyList.innerHTML = historyHTML;
+          return;
+        }
+        
+        // Fallback to local storage
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const userId = userData.id;
+        
+        if (!userId) {
+          historyList.innerHTML = `<div class="empty-history">Please login to view your history.</div>`;
+          return;
+        }
+        
+        // Get user's submissions
+        const allSubmissions = JSON.parse(localStorage.getItem("carbonSubmissions") || "{}");
+        const userSubmissions = allSubmissions[userId] || [];
+        
+        if (userSubmissions.length === 0) {
+          historyList.innerHTML = `<div class="empty-history">No history found. Submit a carbon calculation to start tracking!</div>`;
+          return;
+        }
+        
+        // Sort submissions by date (newest first)
+        userSubmissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // Create HTML for history items
+        let historyHTML = "";
+        userSubmissions.forEach(submission => {
+          historyHTML += `
+            <div class="history-item">
+              <div class="history-date">${submission.date}</div>
+              <div class="history-value">${submission.value.toFixed(2)} kg/day</div>
+            </div>
+          `;
+        });
+        
+        historyList.innerHTML = historyHTML;
+      });
+    }
   </script>
 </body>
 </html>

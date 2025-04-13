@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Members - GreenFooter</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0fff4;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #2f855a;
+      margin-bottom: 1.5rem;
+    }
+
+    .members-container {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 2rem;
+    }
+
+    .members-list {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+    }
+
+    .members-form {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      height: fit-content;
+    }
+
+    .members-form h2 {
+      color: #2f855a;
+      margin-top: 0;
+      font-size: 1.25rem;
+    }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .member-row:last-child {
+      border-bottom: none;
+    }
+
+    .member-avatar {
+      background-color: #e6fffa;
+      color: #2f855a;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+
+    .member-info {
+      flex: 1;
+    }
+
+    .member-name {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .member-meta {
+      display: flex;
+      font-size: 0.875rem;
+      color: #718096;
+    }
+
+    .member-meta span {
+      margin-right: 1rem;
+    }
+
+    .member-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #718096;
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .action-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .action-btn.delete {
+      color: #e53e3e;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #4a5568;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+    }
+
+    form button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #2f855a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #38a169;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .member-stats {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card {
+      background-color: #f0fff4;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2f855a;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: #4a5568;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo">🌿 GreenFooter</a>
+    </div>
+    
+    <div class="sidebar-user">
+      <div class="user-avatar">👤</div>
+      <div class="user-name" id="sidebarUserName">User Name</div>
+      <div class="user-email" id="sidebarUserEmail">user@example.com</div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarCarbonValue">0</div>
+          <div>kg/day</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sidebarFamilyMembers">0</div>
+          <div>Members</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sidebar-nav">
+      <a href="index.html"><span>🏠 Dashboard</span></a>
+      <a href="members.html" class="active"><span>👨‍👩‍👧‍👦 Family Members</span></a>
+      <a href="report.html"><span>📊 Reports</span></a>
+      <a href="leaderboard.html"><span>🏆 Leaderboard</span></a>
+      <a href="offset.html"><span>🌳 Carbon Offset</span></a>
+      <a href="profile.html"><span>👤 Profile</span></a>
+      <a href="#" onclick="logoutUser()"><span>🚪 Logout</span></a>
+    </div>
+    
+    <div class="sidebar-footer">
+      GreenFooter &copy; 2023
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>👨‍👩‍👧‍👦 Family Members</h1>
+    
+    <div class="member-stats">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalMembers">0</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgFootprint">0</div>
+          <div class="stat-label">Avg. Footprint (kg/day)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="lowestFootprint">0</div>
+          <div class="stat-label">Lowest Footprint</div>
+        </div>
+      </div>
+      
+      <p>Manage your household members to track and reduce your family's collective carbon footprint.</p>
+    </div>
+    
+    <div class="members-container">
+      <div class="members-list" id="membersList">
+        <!-- Member list will be populated with JavaScript -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-state-icon">👨‍👩‍👧‍👦</div>
+          <p>No family members added yet.</p>
+          <p>Add your first family member using the form.</p>
+        </div>
+      </div>
+      
+      <div class="members-form">
+        <h2 id="formTitle">Add Family Member</h2>
+        <form id="memberForm">
+          <input type="hidden" id="memberId">
+          
+          <label for="memberName">Name</label>
+          <input type="text" id="memberName" required>
+          
+          <label for="memberAge">Age</label>
+          <input type="number" id="memberAge" min="1" max="120" required>
+          
+          <label for="memberRelation">Relationship</label>
+          <select id="memberRelation" required>
+            <option value="">Select relationship</option>
+            <option value="Self">Self</option>
+            <option value="Spouse/Partner">Spouse/Partner</option>
+            <option value="Child">Child</option>
+            <option value="Parent">Parent</option>
+            <option value="Sibling">Sibling</option>
+            <option value="Other">Other</option>
+          </select>
+          
+          <label for="memberFootprint">Carbon Footprint (kg/day)</label>
+          <input type="number" id="memberFootprint" min="0" step="0.1" value="0">
+          
+          <button type="submit" id="submitBtn">Add Member</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("userToken");
+      
+      // Redirect if not logged in
+      if (!token) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      // Get DOM elements
+      const membersList = document.getElementById("membersList");
+      const emptyState = document.getElementById("emptyState");
+      const memberForm = document.getElementById("memberForm");
+      const formTitle = document.getElementById("formTitle");
+      const submitBtn = document.getElementById("submitBtn");
+      const totalMembersEl = document.getElementById("totalMembers");
+      const avgFootprintEl = document.getElementById("avgFootprint");
+      const lowestFootprintEl = document.getElementById("lowestFootprint");
+      
+      // Form inputs
+      const memberIdInput = document.getElementById("memberId");
+      const memberNameInput = document.getElementById("memberName");
+      const memberAgeInput = document.getElementById("memberAge");
+      const memberRelationInput = document.getElementById("memberRelation");
+      const memberFootprintInput = document.getElementById("memberFootprint");
+      
+      // Update sidebar user information
+      function updateSidebarUserInfo() {
+        const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+        const memberCount = (JSON.parse(localStorage.getItem("members")) || []).length;
+        const carbonValue = localStorage.getItem("carbonFootprint") || "0";
+        
+        document.getElementById("sidebarUserName").textContent = userData.fullName || "User Name";
+        document.getElementById("sidebarUserEmail").textContent = userData.email || "user@example.com";
+        document.getElementById("sidebarCarbonValue").textContent = parseFloat(carbonValue).toFixed(1);
+        document.getElementById("sidebarFamilyMembers").textContent = memberCount;
+      }
+      
+      // Update member stats
+      function updateMemberStats() {
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        const totalMembers = members.length;
+        
+        totalMembersEl.textContent = totalMembers;
+        
+        if (totalMembers > 0) {
+          const footprints = members.map(m => parseFloat(m.footprint) || 0);
+          const totalFootprint = footprints.reduce((sum, fp) => sum + fp, 0);
+          const avgFootprint = totalFootprint / totalMembers;
+          const lowestFootprint = Math.min(...footprints);
+          
+          avgFootprintEl.textContent = avgFootprint.toFixed(1);
+          lowestFootprintEl.textContent = lowestFootprint.toFixed(1);
+        } else {
+          avgFootprintEl.textContent = "0";
+          lowestFootprintEl.textContent = "0";
+        }
+      }
+      
+      // Load members from localStorage
+      function loadMembers() {
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        
+        // Update stats
+        updateMemberStats();
+        updateSidebarUserInfo();
+        
+        // Show/hide empty state
+        if (members.length === 0) {
+          emptyState.style.display = "block";
+          membersList.innerHTML = '';
+          membersList.appendChild(emptyState);
+          return;
+        }
+        
+        emptyState.style.display = "none";
+        
+        // Clear existing list
+        membersList.innerHTML = '';
+        
+        // Add each member to the list
+        members.forEach(member => {
+          const memberRow = document.createElement("div");
+          memberRow.className = "member-row";
+          
+          const initials = member.name
+            .split(' ')
+            .map(n => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+          
+          memberRow.innerHTML = `
+            <div class="member-avatar">${initials}</div>
+            <div class="member-info">
+              <div class="member-name">${member.name}</div>
+              <div class="member-meta">
+                <span>${member.age} years</span>
+                <span>${member.relation}</span>
+                <span>${parseFloat(member.footprint).toFixed(1)} kg/day</span>
+              </div>
+
+            </div>
+            <div class="member-actions">
+              <button class="action-btn edit" onclick="editMember('${member.id}')">✏️</button>
+              <button class="action-btn delete" onclick="deleteMember('${member.id}')">🗑️</button>
+            </div>
+          `;
+          
+          membersList.appendChild(memberRow);
+        });
+      }
+      
+      // Handle form submission
+      memberForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        const isEditing = memberIdInput.value !== "";
+        
+        // Get form values
+        const memberData = {
+          name: memberNameInput.value,
+          age: parseInt(memberAgeInput.value),
+          relation: memberRelationInput.value,
+          footprint: parseFloat(memberFootprintInput.value).toFixed(1)
+        };
+        
+        if (isEditing) {
+          // Update existing member
+          const memberId = memberIdInput.value;
+          const memberIndex = members.findIndex(m => m.id === memberId);
+          
+          if (memberIndex !== -1) {
+            memberData.id = memberId;
+            members[memberIndex] = memberData;
+          }
+        } else {
+          // Add new member
+          memberData.id = 'member_' + Date.now();
+          members.push(memberData);
+        }
+        
+        // Save to localStorage
+        localStorage.setItem("members", JSON.stringify(members));
+        
+        // Update the members list
+        loadMembers();
+        
+        // Clear form
+        resetForm();
+      });
+      
+      // Reset form to add mode
+      function resetForm() {
+        memberForm.reset();
+        memberIdInput.value = "";
+        formTitle.textContent = "Add Family Member";
+        submitBtn.textContent = "Add Member";
+      }
+      
+      // Initial load
+      loadMembers();
+      
+      // Make functions available globally
+      window.editMember = function(memberId) {
+        const members = JSON.parse(localStorage.getItem("members")) || [];
+        const member = members.find(m => m.id === memberId);
+        
+        if (member) {
+          // Fill form with member data
+          memberIdInput.value = member.id;
+          memberNameInput.value = member.name;
+          memberAgeInput.value = member.age;
+          memberRelationInput.value = member.relation;
+          memberFootprintInput.value = member.footprint;
+          
+          // Update form title and button
+          formTitle.textContent = "Edit Family Member";
+          submitBtn.textContent = "Update Member";
+          
+          // Scroll to form
+          document.querySelector(".members-form").scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+      
+      window.deleteMember = function(memberId) {
+        if (confirm("Are you sure you want to delete this family member?")) {
+          const members = JSON.parse(localStorage.getItem("members")) || [];
+          const filteredMembers = members.filter(m => m.id !== memberId);
+          
+          // Save to localStorage
+          localStorage.setItem("members", JSON.stringify(filteredMembers));
+          
+          // Update the members list
+          loadMembers();
+          
+          // Reset form if editing the deleted member
+          if (memberIdInput.value === memberId) {
+            resetForm();
+          }
+        }
+      };
+      
+      window.logoutUser = function() {
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("userData");
+        window.location.href = "index.html";
+      };
+    });
+  </script>
+</body>
+</html>
